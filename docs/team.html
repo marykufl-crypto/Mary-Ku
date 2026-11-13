@@ -1,25 +1,451 @@
 <!DOCTYPE html>
-<html lang="zh"><head>
+<html lang="zh">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="60">
-<title>爆款雷达 · 还在加载</title>
+<title>工作台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-       background:#0a0d13;color:#e8e8ea;text-align:center;padding:24px;
-       font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
-  .spin{width:34px;height:34px;margin:0 auto 26px;border:3px solid #2a2f3a;
-        border-top-color:#ff785a;border-radius:50%;animation:s 1s linear infinite}
-  @keyframes s{to{transform:rotate(360deg)}}
-  h1{font-size:23px;margin:0 0 14px;font-weight:600}
-  p{margin:8px 0;color:#9a9aa2;font-size:15px;line-height:1.75}
-  .hint{margin-top:30px;font-size:13.5px;color:#6e6e78}
-  @media(prefers-reduced-motion:reduce){.spin{animation:none}}
-</style></head><body><div>
-  <div class="spin"></div>
-  <h1>你的页面还在加载中,请稍等</h1>
-  <p>第一次大约需要 20-60 分钟。</p>
-  <p>这一页会自己刷新,你可以先去忙别的。</p>
-  <p class="hint">等很久都没变?回到安装 SOP 第 7 步,<br>到仓库的 Actions 看 Sync Content 有没有跑完。</p>
-</div></body></html>
+  :root {
+    --bg:#0a0d13; --card:#11151d; --card-hi:#151a24; --border:#1d2430; --border-hi:#2c3546;
+    --text:#e8ecf3; --muted:#8a94a6; --faint:#5b6577; --accent:#5ea1ff; --green:#3fd68f;
+    --orange:#f0a33f; --pink:#ff6b9d; --red:#ff5c5c; --fire1:#ff8a3d; --fire2:#ff4d6d;
+    --font:'Inter',-apple-system,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --disp:'Space Grotesk','Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:var(--font); -webkit-font-smoothing:antialiased; }
+  ::selection { background:rgba(94,161,255,.3); }
+  ::-webkit-scrollbar { width:10px; } ::-webkit-scrollbar-thumb { background:#232c3b; border-radius:8px; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+  .ic { width:14px; height:14px; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; fill:none; flex:none; }
+
+  header { position:sticky; top:0; z-index:50; background:rgba(10,13,19,.86);
+    backdrop-filter:blur(14px); border-bottom:1px solid var(--border); padding:13px 20px; }
+  .hrow { display:flex; flex-wrap:wrap; gap:10px; align-items:center; max-width:1200px; margin:0 auto; }
+  .brand { display:flex; align-items:center; gap:10px; margin-right:auto; }
+  .mark { width:31px; height:31px; border-radius:9px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--fire1),var(--fire2)); box-shadow:0 4px 16px rgba(255,92,80,.35); }
+  .mark .ic { width:17px; height:17px; color:#fff; }
+  h1 { font-family:var(--disp); font-size:16.5px; font-weight:700; line-height:1.15; }
+  h1 small { display:block; color:var(--faint); font-family:var(--font); font-weight:400; font-size:10.5px; }
+  .me { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); cursor:pointer;
+    background:var(--card); border:1px solid var(--border); border-radius:10px; padding:7px 12px;
+    transition:border-color .18s; }
+  .me:hover { border-color:var(--border-hi); }
+  .me b { color:var(--text); }
+
+  nav { display:flex; gap:7px; max-width:1200px; margin:12px auto 0; flex-wrap:wrap; }
+  .ntab { display:inline-flex; align-items:center; gap:7px; background:var(--card);
+    border:1px solid var(--border); border-radius:999px; padding:7px 16px; font-size:13.5px;
+    color:var(--muted); cursor:pointer; user-select:none; transition:all .18s; }
+  .ntab:hover { border-color:var(--border-hi); color:var(--text); }
+  .ntab.on { color:var(--text); background:linear-gradient(135deg,rgba(255,138,61,.15),rgba(255,77,109,.15));
+    border-color:rgba(255,120,90,.45); }
+
+  main { max-width:1200px; margin:22px auto; padding:0 20px; }
+  .page { display:none; } .page.on { display:block; }
+
+  .stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+  .stat { flex:1; min-width:130px; background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:14px 16px; }
+  .stat .v { font-family:var(--disp); font-size:26px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .stat .l { color:var(--faint); font-size:12px; margin-top:2px; }
+  .stat.sh .v { color:var(--orange); } .stat.dn .v { color:var(--green); } .stat.pd .v { color:var(--accent); }
+
+  section { background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:16px 18px; margin-bottom:16px; }
+  section h2 { font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  section h2 .ic { color:var(--orange); }
+  section h2 small { color:var(--faint); font-weight:400; font-size:11.5px; margin-left:auto; }
+  .row { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--border);
+    font-size:13px; flex-wrap:wrap; }
+  .row .hookline { flex:1; min-width:200px; color:var(--text); overflow:hidden; text-overflow:ellipsis;
+    white-space:nowrap; }
+  .row .hookline small { color:var(--faint); display:block; font-size:11px; margin-top:1px; }
+  .row .who2 { color:var(--accent); text-decoration:none; font-weight:600; font-size:12px; white-space:nowrap; }
+  .xb { font-family:var(--disp); font-weight:600; font-size:11px; color:var(--orange);
+    border:1px solid rgba(240,163,63,.4); background:rgba(240,163,63,.07); border-radius:99px;
+    padding:2px 8px; white-space:nowrap; }
+  .pill { display:inline-flex; align-items:center; gap:4px; background:#0c0f16; color:var(--muted);
+    border:1px solid var(--border); border-radius:9px; padding:5.5px 10px; font-size:11.5px;
+    cursor:pointer; text-decoration:none; font-family:var(--font); transition:all .18s; white-space:nowrap; }
+  .pill .ic { width:11px; height:11px; }
+  .pill:hover { color:var(--accent); border-color:rgba(94,161,255,.5); }
+  .pill.ok:hover { color:var(--green); border-color:rgba(63,214,143,.5); }
+  .pill.bad:hover { color:var(--red); border-color:rgba(255,92,92,.5); }
+  .none { color:var(--faint); font-size:13px; padding:14px 0 6px; }
+
+  .act { display:flex; gap:9px; padding:7px 0; border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--muted); }
+  .act time { color:var(--faint); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .act b { color:var(--text); font-weight:600; }
+  .act .to { color:var(--orange); }
+
+  #radarWrap { height:calc(100vh - 150px); min-height:500px; border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; }
+  #radarWrap iframe { width:100%; height:100%; border:0; }
+
+  .sop { max-width:820px; }
+  .sop h3 { font-size:15px; margin:22px 0 10px; display:flex; gap:8px; align-items:center; }
+  .sop h3 .ic { color:var(--orange); }
+  .sop ol { margin:0 0 8px 22px; color:var(--muted); font-size:13.5px; line-height:1.9; }
+  .sop ol b { color:var(--text); }
+  .sop p { color:var(--muted); font-size:13px; line-height:1.7; margin-bottom:6px; }
+  .sop table { border-collapse:collapse; font-size:13px; margin:8px 0; }
+  .sop td, .sop th { border:1px solid var(--border); padding:7px 14px; color:var(--muted); }
+  .sop th { color:var(--text); background:var(--card-hi); }
+
+  #mission { border:1px solid rgba(255,120,90,.35); border-radius:16px; padding:15px 18px;
+    margin-bottom:14px; background:linear-gradient(135deg,rgba(255,138,61,.10),rgba(255,77,109,.10)); }
+  #mission .mt { font-weight:600; font-size:14px; display:flex; gap:8px; align-items:center; }
+  #mission .mt .ic { color:var(--orange); }
+  #mission .md { color:var(--muted); font-size:12.5px; margin-top:5px; line-height:1.6; }
+  #mission .md b { color:var(--text); font-family:var(--disp); }
+  #overlay { position:fixed; inset:0; background:rgba(6,8,12,.88); backdrop-filter:blur(6px);
+    z-index:200; display:none; place-items:center; }
+  #overlay.show { display:grid; }
+  .obox { background:var(--card); border:1px solid var(--border-hi); border-radius:18px;
+    padding:28px 30px; width:min(92vw,380px); }
+  .obox h2 { font-family:var(--disp); font-size:18px; margin-bottom:6px; }
+  .obox p { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .obox input, .obox select { width:100%; background:#0c0f16; color:var(--text);
+    border:1px solid var(--border); border-radius:10px; padding:10px 13px; font-size:14px;
+    font-family:var(--font); margin-bottom:11px; }
+  .obox input:focus, .obox select:focus { border-color:var(--accent); outline:none; }
+  .obox button { width:100%; background:linear-gradient(135deg,var(--fire1),var(--fire2));
+    color:#fff; border:0; border-radius:10px; padding:11px; font-size:14px; font-weight:600;
+    font-family:var(--font); cursor:pointer; }
+  .obox button:active { transform:scale(.98); }
+
+  #toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(8px);
+    background:var(--card-hi); border:1px solid var(--border-hi); border-radius:11px;
+    padding:11px 20px; font-size:13px; display:none; z-index:300; opacity:0;
+    box-shadow:0 12px 32px rgba(0,0,0,.5); transition:opacity .2s, transform .2s; }
+  #toast.show { display:block; opacity:1; transform:translateX(-50%) translateY(0); }
+  @media (prefers-reduced-motion: reduce) { * { animation:none!important; transition:none!important; } }
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m10 8 6 4-6 4Z"/><rect x="2" y="4" width="20" height="16" rx="3"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 24 24"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+</svg>
+<header>
+  <div class="hrow">
+    <div class="brand">
+      <div class="mark"><svg class="ic"><use href="#i-flame"/></svg></div>
+      <h1>工作台<small id="updated"></small></h1>
+    </div>
+    <div class="me" id="meBtn" title="点击修改身份">
+      <svg class="ic"><use href="#i-user"/></svg><span id="meLabel">未登记</span>
+    </div>
+  </div>
+  <nav>
+    <div class="ntab on" data-p="work"><svg class="ic"><use href="#i-clock"/></svg>今日工作</div>
+    <div class="ntab" data-p="radar"><svg class="ic"><use href="#i-radar"/></svg>爆款雷达</div>
+    <div class="ntab" data-p="sop"><svg class="ic"><use href="#i-book"/></svg>SOP</div>
+  </nav>
+</header>
+<main>
+  <div class="page on" id="p-work">
+    <div id="mission"></div>
+    <div class="stats">
+      <div class="stat pd"><div class="v" id="stPending">–</div><div class="l">未处理(待挑选)</div></div>
+      <div class="stat sh"><div class="v" id="stShoot">–</div><div class="l">拍摄中</div></div>
+      <div class="stat dn"><div class="v" id="stDone">–</div><div class="l">已处理</div></div>
+    </div>
+    <section id="secShoot">
+      <h2><svg class="ic"><use href="#i-video"/></svg>拍摄中队列<small>做完一条,点「完成」</small></h2>
+      <div id="shootList"></div>
+    </section>
+    <section id="secPick">
+      <h2><svg class="ic"><use href="#i-flame"/></svg>本周待挑选爆款 Top 8<small>看中就点「选中拍摄」,细看去爆款雷达</small></h2>
+      <div id="pickList"></div>
+    </section>
+  </div>
+  <div class="page" id="p-radar"><div id="radarWrap"></div></div>
+  <div class="page sop" id="p-sop">
+    <section>
+      <h3><svg class="ic"><use href="#i-flame"/></svg>SOP-01 · Marketer 每周选题流程(周一,约30分钟)</h3>
+      <ol>
+        <li>打开<b>爆款雷达</b>,点快筛「<b>真爆款 ×2+</b>」+「<b>近7天</b>」</li>
+        <li>看「爆款热词」确认本周主题方向(热词越多的主题越优先)</li>
+        <li>挑 <b>3–5 条</b>适合改编的。标准:话题跟我们相关 / Hook 可复制 / 我们拍得出来</li>
+        <li>每条点「<b>Brief</b>」复制 → 发到拍摄群</li>
+        <li>把选中的卡片<b>拖到「拍摄中」</b></li>
+        <li>明显不适合的拖「跳过」,保持未处理越少越好</li>
+      </ol>
+    </section>
+    <section>
+      <h3><svg class="ic"><use href="#i-video"/></svg>SOP-02 · Content Creator 拍摄改编流程(每条 ≤1天)</h3>
+      <ol>
+        <li>打开工作台「<b>今日工作</b>」,看拍摄中队列,从最旧的开始</li>
+        <li>打开原帖看 <b>3 遍</b>:第1遍看整体 / 第2遍拆 Hook(前3秒为什么让人停下) / 第3遍记结构(几个镜头、什么节奏)</li>
+        <li><b>改编不照抄</b>:换成我们的案例、口吻、行业。保留结构,替换内容</li>
+        <li>拍摄 → 剪辑。<b>前3秒必须有钩子</b>,字幕开头即出</li>
+        <li>发布后回到工作台,该条点「<b>完成</b>」</li>
+      </ol>
+    </section>
+    <section>
+      <h3><svg class="ic"><use href="#i-book"/></svg>SOP-03 · 状态定义(团队统一语言)</h3>
+      <table>
+        <tr><th>状态</th><th>意思</th><th>谁负责改</th></tr>
+        <tr><td>未处理</td><td>还没人筛选过</td><td>Marketer 每周清理</td></tr>
+        <tr><td>拍摄中</td><td>已选中,正在改编/拍摄/剪辑</td><td>Marketer 选中时拖入</td></tr>
+        <tr><td>已处理</td><td>已发布或已完成改编</td><td>Creator 完成时点</td></tr>
+        <tr><td>跳过</td><td>不适合我们,不再考虑</td><td>任何人</td></tr>
+      </table>
+    </section>
+    <section>
+      <h3><svg class="ic"><use href="#i-radar"/></svg>SOP-04 · 看到「引流」标签的帖子怎么学</h3>
+      <p>带「引流」标的帖子,重点<b>不是内容,是漏斗</b>。记录三件事:</p>
+      <ol>
+        <li>留言<b>关键词</b>是什么?(例:留言「Start」)</li>
+        <li>送的<b>诱饵</b>是什么?(模板 / 课程 / 清单)</li>
+        <li>之后导去<b>哪里</b>?(DM 自动回复 → 链接 → 报名页)</li>
+      </ol>
+      <p>好的打法直接抄结构,用我们的 GHL / ManyChat 实现。</p>
+    </section>
+    <section>
+      <h3><svg class="ic"><use href="#i-user"/></svg>SOP-05 · 竞对名单管理(发现好账号就加进来)</h3>
+      <ol>
+        <li>打开 Supabase「<b>competitors</b>」表,加一行</li>
+        <li><b>Username</b>:贴账号名或 IG <b>主页</b>链接都行(带 ?igsh= 参数没关系;不要贴帖子链接)</li>
+        <li><b>Tracker</b>:选 IG Competitors 或 AI Competitors</li>
+        <li><b>Active</b>:打勾✅ — <b>没勾不会抓</b></li>
+        <li>每周一自动生效;停止追踪 = 取消勾,不用删行</li>
+      </ol>
+      <p>加账号的标准:跟我们领域相关 / 内容有爆款相 / 值得学。发现雷达里某账号长期没爆款,把它 Active 取消,腾出额度换新的。</p>
+    </section>
+    <section>
+      <h3><svg class="ic"><use href="#i-user"/></svg>SOP-06 · 第一次设置 & 常见问题</h3>
+      <ol>
+        <li><b>登记身份:</b>第一次打开工作台会弹「你是谁」→ 输名字、选角色。这决定你看到的任务卡和排版</li>
+        <li><b>直接改状态:</b>雷达里把卡片拖到上方分类,或用卡片下拉选。看到绿色 ✓ 就成了。<b>不需要输任何密钥</b> —— 这套系统天生只允许改状态,改不了别的数据,所以安全无需登录</li>
+      </ol>
+      <p><b>常见问题:</b></p>
+      <table>
+        <tr><th>现象</th><th>原因</th><th>解决</th></tr>
+        <tr><td>改了状态没反应 / 报错</td><td>网络断了,或页面是旧版</td><td>刷新页面(Ctrl+Shift+R)再试</td></tr>
+        <tr><td>队友改的状态我看不到</td><td>页面最多 10 分钟同步一次</td><td>刷新页面即可;自己的改动是即时的</td></tr>
+        <tr><td>网页打不开 / 数据是空的</td><td>每周自动更新那天可能还在跑</td><td>等 1 小时后再开;还不行找老板看 GitHub Actions</td></tr>
+      </table>
+      <p>状态存在云端(Supabase),换电脑、关机都不会丢,全团队实时共享。</p>
+    </section>
+  </div>
+</main>
+<div id="overlay"><div class="obox">
+  <h2>👋 你是谁?</h2>
+  <p>登记一次,方便团队知道是谁在操作。</p>
+  <input id="oName" placeholder="你的名字" maxlength="20">
+  <select id="oRole">
+    <option value="Marketer">Marketer(选题/投放)</option>
+    <option value="Content Creator">Content Creator(拍摄/剪辑)</option>
+    <option value="Boss">Boss</option>
+  </select>
+  <button id="oSave">进入工作台</button>
+</div></div>
+<div id="toast"></div>
+<script id="data" type="application/json">[{"id": "DfWY51YGZLi", "tracker": "premium coffee and essential oil  竞对", "competitor": "memoireacademy", "caption": "🌿 【香薰入門證書課程】現正招生！ ✨\n給自己 4 小時的時間，走進香薰的療癒世界，學習用天然精油照顧自己與家人身心健康。\n💡 課程亮點：\n 了解精油與植物底油基礎及安全使用方法\n 學習將香薰融入日常舒壓與生活應用\n 現場親手製作 10ml 天然護膚油 1 支（價值 $280）\n 完課獲頒 修讀證書 乙張\n🗓 時間： 1:00 PM – 5:00 PM (4小時)\n💰 優惠體驗價： $800 (原價 $1800)\n📍 地點： 尖沙咀北京道53-63號國都大廈9樓902室\n📩 名額有限，歡迎 DM 查詢或報名！\n#MemoireAcademy #PPAHK #香薰治療 #精油入門 #身心平衡", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 痛点引入 → 课程亮点 → 体验价值 → 行动呼吁\n为什么火: 精准切入都市人身心舒压需求，高性价比与证书赋能降低决策门槛。\n改编角度: 突出“4小时速成天然精油保养”结合“高端咖啡品鉴”，吸引追求品质生活的白领。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅現代人，每日拼命工作，心裡好想將個念頭靜落嚟，但總覺得要學好多好複雜嘅技巧，或者要花好多時間先可以調整狀態。\n\n其實唔係嘅。\n\n調整身體需要時間，最緊要嘅係你有冇內在力量同覺知去認識自己。\n\n第一，每日試下用呼吸同聞咖啡來做一個鐘頭嘅靜心練習，幫自己慢慢清零。\n呢個方法好簡單，唔需要你離開現時嘅工作，只需要你將注意力帶返當下，感受自己嘅呼吸，背後嘅嘢可以逐步了解。\n\n第二，揀一支自家製嘅優質精油，比如 HK$468 一支嘅精油，喺日常生活中幫自己放鬆。\n當你聞到呢個香味嘅時候，可以好清明咁樣看到自己嘅方向，念頭自然會靜落嚟。\n\n第三，參加 28 天咖啡療癒，由老師帶領你每日進行練習。\n呢個過程包含咗好多創作同覺知，可以有體驗再去選擇咯，幫你發掘自己嘅潛在潛質。\n\n有一位中年嘅朋友，佢好想轉型做身心靈工作，但有家庭負擔，未走出舒適圈，遲遲都唔知自己想點。\n佢嚟搵我做人生方向諮詢嘅時候，我問佢同樣嘅問題：你想成為一個點樣嘅人？\n調整咗心態之後，佢慢慢搵到自己嘅內在力量，喺原本嘅生活入面找到真正嘅自己。\n\n背後嘅嘢可以逐步了解，因為調整身體需要時間。\n如果你都想好清明咁樣認識自己，歡迎你隨時私信我了解人生方向諮詢。", "tags": "MemoireAcademy, PPAHK, 香薰治療, 精油入門, 身心平衡", "bait": false, "type": "Carousel", "likes": 2, "comments": 0, "er": 0.14, "followers": 1423, "date": "2026-11-05", "url": "https://www.instagram.com/p/DfWY51YGZLi/", "video": false, "ratio": 0, "score": 0.14, "status": "未处理", "x": 0}, {"id": "DfCZU9GHXBL", "tracker": "premium coffee and essential oil  竞对", "competitor": "reiki_journey_hk", "caption": "👼🏻👼🏻👼🏻\n\n這陣子，身邊不少人都過得有些吃力。\n\n有人經歷了工作環境的驟變，一時間失去了原本的步調；\n\n有人在職場裡明明很努力，卻換來排擠與欺凌；\n\n也有人因為一時的善良，不幸落入騙局的陷阱。\n\n看著身邊那些帶著淚水、寫滿委屈的臉龐，我知道，很多人都在深夜裡一遍又一遍地怪責自己：「是不是因為我總想著負面的事，才把這些厄運吸引過來？」\n\n或者焦慮地懷疑：「這是不是我的因果業力？我是不是不夠正念，才會落得這個下場？」\n\n其實，這一切絕對不是你的錯。你沒有做錯任何事，請不要再用這些理論來懲罰自己了。\n\n很多人誤解了吸引力法則，以為只要心裡有一絲恐懼、有一天不夠正面，就會招來災難。\n\n這種想法，其實是對受害者的二次傷害。\n\n當你遇上不公義的事情，你感到憤怒、悲傷、委屈，這不過是人類最誠實、最健康的心理反應。\n\n如果連受傷時哭泣的權利都要被剝奪，那不叫修行，那叫自我壓抑。\n\n環境的更迭只是經濟洪流的變動，職場的欺凌是施害者自身的扭曲，騙子的詐騙是源於他們的貪婪——這些都是外在世界的風雨，絕對不是你心靈投射出來的懲罰。\n\n業力，也從來不是一種報應。遇到壞事，並不代表你是一個失敗的人。\n\n生命中那些最難捱的關口，不過是一場靈魂的歷練。\n\n正因為你已經成長得足夠成熟，才準備好在這場風暴中，學會如何看清真相、如何保護自己，並在跨過這道難關之後，熬出屬於自己的底氣。\n\n真正的正能量，從來不是強顏歡笑，也不是硬逼自己每天都要保持積極。\n\n真正的力量，是全然的接納。\n\n當你不再把力氣拿去自責，你才有能量去滋養自己。\n\n那些傷害你的人和事，總有一天會隨風而去；\n\n但你對自己的愛，會陪你走過所有風雨。\n\n你做得很好，你已經非常勇敢了。", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 共情受挫现状 → 拆除受害者自责谬论 → 给出正能量新定义 → 结尾温柔赋能\n为什么火: 精准捕捉都市人群内耗与精神疲惫，用高情绪价值的文字实现深度心理治愈。\n改编角度: 结合咖啡与精油，讲述职场受挫时如何用一杯精品咖啡与疗愈精油找回内在底气。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n這陣子，身邊不少高壓專業人士與創業者過得有些吃力。\n有人經歷了工作環境的驟變，一時間失去了原本的步調。\n明明每天加班工作很努力，卻換來職場裡的各種排擠與無奈。\n很多人都在深夜裡一遍又一遍地怪責自己：「是不是我哪裡做錯了？」\n或者焦慮地懷疑：「我是不是不夠正念，才會落得這個下場？」\n其實，這一切絕對不是你的錯，請不要再這樣懲罰自己了。\n很多人以為，只要心裡有一絲恐懼、有一天不夠正面，就會招來災難。\n這種想法，其實是對自己的一種二次傷害。\n當你遇上不公義的事情，你感到憤怒、悲傷、委屈，這不過是人類最誠實的心理反應。\n如果連受傷時哭泣的權利都要被剝奪，那不叫修行，那叫自我壓抑。\n環境的更迭只是洪流的變動，職場的壓力是外在世界的風雨。\n這絕對不是你心靈投射出來的懲罰，你不需要把所有責任都扛在自己身上。\n生命中那些最難捱的關口，需要調整你有冇內在力量與覺知去認識自己。\n正因為你已經準備好了，才學會如何看清真相、如何保護自己。\n真正的正能量，從來不是強顏歡笑，也不是硬逼自己每天都要保持積極。\n真正的力量，是全然的接納，好清明咁樣看到這個方向。\n當你不再把力氣拿去自責，你才有能量去滋養自己。\n你可以選擇每天花一點時間，泡一杯好優質嘅咖啡，讓念頭靜落嚟。\n用呼吸與聞咖啡的過程，搭配輕柔的靜心，大概一個鐘頭的時間。\n背後嘅嘢可以逐步了解，因為其實調整身體需要時間嘅，慢慢把狀態找回來。\n以前你總是拼命賺錢卻內耗不斷，身體發出疲憊的信號卻被你忽略了。\n用對方法以後，你開始懂得照顧自己，找回原本就屬於你的內在力量。\n如果你也想尋找一個自我喺呢個世界嘅使命，或是想了解人生方向諮詢。\n現在就私信我，領取咖啡五臟顯化冥想指南，開始每天的靜心練習。\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "", "bait": false, "type": "Carousel", "likes": -1, "comments": 6, "er": 0.03, "followers": 16468, "date": "2026-10-28", "url": "https://www.instagram.com/p/DfCZU9GHXBL/", "video": false, "ratio": 0, "score": 0.11, "status": "未处理", "x": 1.2}, {"id": "DehBzAVHU3o", "tracker": "premium coffee and essential oil  竞对", "competitor": "reiki_journey_hk", "caption": "👼🏻👼🏻👼🏻\n\n傳統傳承的「減法智慧」，與現代流派的「廣納百川」\n\n近年香港的身心靈界發展蓬勃，頌缽（Singing Bowls）走進了許多人的生活。隨之而來的是，市場上出現了各種不同的手法、理論與技術。這本是一件美事，代表有更多人能透過聲音找到內心的平靜。\n\n在百花齊放的背後，有時也會出現派系間的對立。習惯用自己的標準，去評判其他導師及療癒師的手法。\n\n作為一名教授印度派系頌缽的導師，每當看到這些現象，我總會反思：我們在敲響頌缽、清理他人負能量的同時，自己內心的「驕傲」與「評判」，又是否有被好好清理？\n\n聲音是流動的，傲慢卻會將心封閉\n\n「療癒」的核心，是接納與和諧。如果一位聲音療癒者心中帶著強烈的階級觀念、門戶之見，覺得「只有我的派系最優越，其他都是錯的」，這種對立與仇視的思想一旦灌輸給學生，便違背了身心靈修習的初衷。\n\n因為每個流派都是一扇窗，讓我們從不同的視野，看見聲音蘊含的無限可能。\n\n讀懂流派的分別，才不會用「消費者的眼光」去評判\n\n現在的學生或客人，有時會不自覺地用「消費者買產品」的角度來看待身心靈課程——覺得課程內容要像套餐一樣「越豐富、越多花款、越包羅萬有，才叫性價比高」，甚至會批評某些傳統導師「教漏嘢（教少、教不全）」。\n\n這其實是因為大家不了解「傳統純正傳承」與「現代整合系統」的分別：\n\n傳統導師的「純正傳承（如尼泊爾、印度派系）」：\n\n傳統傳承講求的是「深度」而非「廣度」。例如我所教授的印度派系，它有著數千年阿育吠陀與吠陀醫學的根基，講求精準的身體脈輪對位、能量管道（Nadis）的調和，以及敲缽者自身的內在修持。傳統系統不會在一堂課裡塞滿五花八門的西方科學儀器或揉合各國手法，因為它專注於將單一系統做到極致、精純。\n\n現代新派導師的「整合系統」：\n 現在有些導師，會結合現代聲學、腦波理論（科學頌缽）以及不同流派的手法，編織出一套適合現代都市人快速減壓的整合系統。它的優點是「廣博、現代化、易於被城市人理解」，能從多維度提供解說。\n\n兩者沒有高低之分，只是前者的修行在於「深掘一口井」，後者的修行在於「廣納百川」。\n\n世上沒有完美的派系，只有當下最適合你身體和心靈的頻率。\n\n無論是古老神秘的尼泊爾傳承、嚴謹對位的印度吠陀系統，還是結合現代神經科學的西式頌缽，它們的終點都是一樣的——帶領靈魂回歸平靜。\n\n當我們能用包容的目光看待每一個流派，我們敲出來的", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 行业现状 → 核心矛盾 → 深度解析 → 包容呼吁\n为什么火: 直击身心灵圈内派系对立痛点，以大局观引发共鸣与深度反思\n改编角度: 探讨精品咖啡产地派系与精油疗法门户之见，倡导专注本质而非流派对立", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅現代人以為，想學識照顧自己、想將念頭靜落嚟，一定要去上好多唔同嘅堂，買晒所有最新嘅工具。\n\n其實唔係咁嘅，真正需要調整嘅，係你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n第一樣，透過每日嘅呼吸同靜心，去感受自己當下嘅狀態。你可以用大概一個鐘頭嘅時間，先將念頭靜落嚟，調整身體需要時間嘅，慢慢去發掘自己嘅潛在潛質。\n\n第二樣，你可以用一杯優質嘅療癒咖啡去幫手。例如我哋嘅療癒咖啡，價錢係港幣一百二十八蚊一盒，入面有五包獨立掛耳包。你可以好似平時飲咖啡咁，先去聞一聞香氣，然後去體會內在嘅覺知，令自己慢慢通暢。\n\n第三樣，配合自家製嘅精油一齊用。例如港幣四百六十八蚊一支嘅精油，每日喺日常生活中花少少時間去聞下，幫自己做一個好好嘅覺察同轉念，唔需要急，可以有體驗再去選擇咯。\n\n以前嘅我或者好多客人都好忙碌，對於工作好重視，就疏忽咗身體，成日覺得自己未清零而知，做咩都好似好重負擔咁。\n\n當你用對方法，每日花少少時間，用呼吸、咖啡同精油去陪伴自己，你會慢慢搵到自己喺呢個世界嘅使命，成為真正嘅自己。\n\n如果你都想開始呢個好清明嘅旅程，歡迎私信我，領取咖啡五臟顯化冥想指南，或者了解更多關於 28 天咖啡療癒。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "", "bait": false, "type": "Carousel", "likes": -1, "comments": 5, "er": 0.02, "followers": 16468, "date": "2026-10-15", "url": "https://www.instagram.com/p/DehBzAVHU3o/", "video": false, "ratio": 0, "score": 0.09, "status": "未处理", "x": 1.0}, {"id": "DetFP0rCXS_", "tracker": "premium coffee and essential oil  竞对", "competitor": "healing.museum", "caption": "「如何選擇才不會後悔？每次做決定都陷入選擇困難，又怕亂用靈擺會連結到低頻能量？」 🕊️✨\n\nHealing Museum－－誠意推介給想用靈擺為自己尋找指引的你🌙其實你需要的不是更多外在建議，而是一套安全、精準的直覺指引工具。\n\n✨想當年Bella老師學習的第一項靈性工具就是靈擺，深深體會到靈擺的實用。只要正確及安全連結，而且每個人也能輕鬆踏進靈性的大門，得到合適的指引。\n\n靈擺是一門可以學習的直覺工具，答案是否清晰，除了取決於提問方法，亦與使用的時機、心態及事前準備息息相關。\n\n很多人未曾學過這些基本觀念，便開始自行摸索，結果愈問愈迷惘，內心愈混亂。\n\n正確及安全地使用靈擺能讓你輕鬆解決日常奇難雜症，及步上人生神聖使命。利用靈擺帶領大家在靈性成長的道路上，找回自身神聖力量，並快速提昇自我。\n\n🕯️課程特色——\n⊹ 包涵詳細數千字彩色筆記及圖表\n⊹ 使用禁忌與正確提問方法\n⊹ 使用前的淨化與防護步驟\n⊹ 課堂實踐練習及個別指導\n⊹ 超濃縮精華課堂內容\n⊹ 分享選擇困難時實戰經驗\n⊹ 方式能輕鬆應用在日常生活\n\n【 連結天使靈擺課 】 實體小班來了✨歡迎攜帶自己心愛的靈擺\n\n✦ 2026年10月27日 ㊁\n時間：19:30pm – 22:15pm\n（時間因應同學課程進度而調節）\n\n地點 : 荔枝角區（鄰近地鐵站）\n形式：1－5人；小班教學實體課\n導師：Bella Poon\n\n能量交換：HKD$1,280；2人同行HKD$1,080\n🎁 凡報讀課程╲ 附送 .ᐟ ╱ ❝水晶靈擺❞乙個\n\n【報名】 💌 請即私訊 @healing.museum 報名或查詢\n\n✦ 本課程只設有實體授課\n✦ 本課堂並無宗教信仰，任何人士均可參與\n\n——\n\n𝐌𝐚𝐲 𝐚𝐥𝐥 𝐥𝐢𝐯𝐢𝐧𝐠 𝐛𝐞𝐢𝐧𝐠𝐬 𝐛𝐞 𝐟𝐫𝐞𝐞 𝐟𝐫𝐨𝐦 𝐬𝐮𝐟𝐟𝐞𝐫𝐢𝐧𝐠 𝐚𝐧𝐝 𝐚𝐭𝐭𝐚𝐢𝐧 𝐛𝐥𝐢𝐬𝐬.\n\n✶ 療癒水晶：可追蹤 @lunana.crystal\n✶ 身心療癒：可追蹤 @healing.museum\n\n——\n⠀\n#香港工作坊 #英國天使靈氣 #靈擺課程 #香港療癒師 #身心靈療癒", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 抛出选择困难痛点 → 揭示盲目摸索误区 → 给出专业工具解法 → 引导课程报名\n为什么火: 精准击中身心灵受众在关键抉择时的迷茫心理，提供低门槛的解决方案。\n改编角度: 结合精品咖啡与精油，痛点切入“如何选对适合自己当下频率的咖啡豆或精油”。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n每次做決定都陷入選擇困難？又或者好擔心自己未準備好，唔知道點樣去面對生活入面嘅轉變？\n\n好多人以為，要搵到人生方向，一定要花好多時間去重新開始。\n\n其實不是這樣的。\n\n你需要調整你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n今天想同你分享三個好簡單嘅日常練習。\n\n第一個練習是每日花一點時間靜落嚟。\n\n透過呼吸同聞咖啡，讓自己嘅念頭慢慢靜落嚟。\n\n背後嘅嘢可以逐步了解，因為其實調整身體需要時間嘅。\n\n第二個練習是學習帶著覺知去過每一日。\n\n當遇到生活同工作嘅挑戰時，先將個念頭停一停。\n\n呢種內在力量係你需要深度嘅覺知，同埋個身體好好通暢。\n\n第三個練習是給自己一個體驗再去選擇嘅空間。\n\n我哋有 28 天嘅咖啡療愈，會係由老師帶領。\n\n喺呢個過程入面，可以俾人哋嘗試佢哋每日練習。\n\n有位中年嘅朋友，好想轉型做佢想做嘅身心靈工作。\n\n但係因為佢未走出舒適圈，同埋有好多家庭負擔。\n\n所以遲遲都未好清明咁想知道自己做乜嘢。\n\n以前，佢一面對選擇就覺得好迷惘，唔知道點樣平衡生活同內心嘅想法。\n\n用咗呢啲方法之後，佢慢慢懂得將念頭靜落嚟，好清明咁樣看到自己真正想走嘅方向。\n\n你可以有體驗再去選擇咯。\n\n如果好想將個念頭靜落嚟，好想發掘自己嘅潛在嘅潛質。\n\n可以私訊我了解更多關於人生方向諮詢同 28 天咖啡療癒。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "香港工作坊, 英國天使靈氣, 靈擺課程, 香港療癒師, 身心靈療癒", "bait": false, "type": "Carousel", "likes": 18, "comments": 0, "er": 0.08, "followers": 22069, "date": "2026-10-20", "url": "https://www.instagram.com/p/DetFP0rCXS_/", "video": false, "ratio": 0, "score": 0.08, "status": "未处理", "x": 0}, {"id": "DfocVJUCfxb", "tracker": "premium coffee and essential oil  竞对", "competitor": "healing.museum", "caption": "【꧁英國天使靈氣©課程꧂】\n⠀\n英國天使靈氣©是一套溫和、簡單、任何人都可以學習的療癒系統。它匯聚天使王國純淨的能量，以及神聖源頭的智慧與無條件的愛。在課程中，你將學習與大天使、揚昇大師及星際療癒者攜手，為自己及所愛的人進行療癒——支持情緒、思維與靈性層面的釋放與平衡，並溫柔地照顧你的內在小孩。\n\n英國天使靈氣©屬輔助療癒系統，遍佈全球，系統具國際認受性，已在國際補充治療師協會（IICT）註冊，並於 The Healer Foundation 登記，附屬於英國補充醫學協會（BCMA）。不少學員為醫護人員，輔助及支援醫生、護士或患者。\n⠀\n🕯️甚麽人士適合參加？\n✶ 希望讓生命得到轉化、提昇\n✶ 願意脫離過往所有負面情緒及阻礙\n✶ 想學習用途廣泛、助人助己的療癒系統\n✶ 願意更多天使的光與愛帶進生命\n✶ 容許天使在你的生命中陪伴及支持\n\n——\n\n🕯國際認證英國官方天使靈氣© 一、二階證書課程（二天）\n日期：2026年11月28日 ㊅ – 11月29日 ㊐\n時間：10:30am – 6:30pm（因應同學課程進度而定，包括🍽午膳時間）\n地點 : 荔枝角區（鄰近地鐵站）\n形式：小班教學實體課（名額有限；不設遙距課程）\n官方認證導師：Bella Poon\n\n🕯️ 為甚麼要合報1-4階？\n✶ 官方推介的完整療癒手法 第1、2階讓你與天使王國建立連結，學習基本的療癒方法；第3、4階則深化這份連結，學習紮根，並完滿所有療癒手法。英國天使靈氣官方推介完成1-2階及3-4階，才是一套完整的自我療癒手法。\n\n✶ 循序漸進，學習不中斷 先完成1-2階，再與同班同學一起商議3-4階的上課日期。同一班同學一起成長，學習節奏更連貫。\n\n費用：\n➤ 一、二階公價HKD$4,680\n╲ 費用包括 .ᐟ ╱ 英國官方認證第一、二階中文課程手冊、導師整合補充筆記、英國官方證書、及Healing Museum獨有❝純天然列姆利亞❞大師水晶（產量稀少，先報先得，送完即止）\n\n➤ ⚜️ ╲ 合報優惠 .ᐟ ╱ ⚜️ 分開報讀1-2階及3-4階，原價合共 HKD$10,560；合報只需 HKD$9,504，節省 HKD$1,056。\n\n*如4人或以上同行，即可以包班上課，可約平日或假日授課\n\n· 課程將會在收妥全數課程費用後才獲確認\n· 此課程為國際認證課程，報名一經確定不得更改至其他課程或取消，亦不設退款，", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 痛点唤醒 → 疗癒方案 → 课程权益与优惠\n为什么火: 精准切中都市人群渴望内耗解脱与精神疗愈的深层心理需求。\n改编角度: 结合精品咖啡与精油，主打“一杯手冲与一滴精油，打造每日5分钟居家疗愈仪式”。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅香港人以為，想改變現狀就要辭職重新開始，或者花好多時間去重新學習一套專業技能。\n\n其實唔係咁樣。真正需要調整嘅，係你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n第一，喺日常生活中抽時間呼吸，先將個念頭靜落嚟。你可以試下聞住自家製嘅療癒咖啡，感受當下嘅溫度，調整自己嘅 mindset，慢慢釋放內在嘅壓力。\n\n第二，你可以透過簡單嘅日常練習去聆聽自己嘅聲音。不需要複雜嘅步驟，只要透過每日嘅呼吸同靜心，去發掘自己潛在嘅潛質，將未清零嘅部份慢慢清理。\n\n第三，背後嘅嘢可以逐步了解，因為其實調整身體需要時間嘅。你可以先參加 28 天咖啡療癒，由老師帶領，慢慢建立日常練習嘅習慣，可以有體驗再去選擇咯。\n\n以前嘅你，可能因為家庭同工作嘅負擔，覺得自己走唔出舒適圈，遲遲都未好清明咁知道自己想做乜嘢。\n\n用對方法以後，當你學識將念頭靜落嚟，就會搵到內在力量，好清明咁睇到自己真正想成為嘅人。\n\n如果你都想搵到自己嘅人生方向，可以私信我了解人生方向諮詢，或者一齊參與 28 天咖啡療癒。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "AngelicReiki, 英國天使靈氣, 靈氣療癒, 香港療癒", "bait": false, "type": "Carousel", "likes": 12, "comments": 0, "er": 0.05, "followers": 22069, "date": "2026-11-12", "url": "https://www.instagram.com/p/DfocVJUCfxb/", "video": false, "ratio": 0, "score": 0.05, "status": "未处理", "x": 0}, {"id": "DdybUVsnegn", "tracker": "premium coffee and essential oil  竞对", "competitor": "reiki_journey_hk", "caption": "👼🏻👼🏻👼🏻\n\nChanel女士曾說：「美麗從你決定成為自己的那一刻開始。」（Beauty begins the moment you decide to be yourself.） 她深知女人的美不單是外在的塗抹，更是由內而外散發的自信與生命力。\n\n她也曾說：「20歲的面貌是上天給你的，50歲的面貌是你自己決定的。」 這份「自己決定」的美麗，關鍵就在於我們對身體與心靈的日常滋養。\n\n規律的睡眠是維持身體及皮膚健康的根本基石。當我們進入深度睡眠，身體會啟動自我修復機制，加速皮膚新陳代謝，讓肌膚重拾彈性。\n\n為了達到高質量的睡眠，現代人常面臨壓力過大、難以入睡的困擾，此時聲音療癒（Sound Healing）與深層呼吸法就是最有效的天然處方。\n\n透過銅鑼、頌缽等療癒頻率，結合規律的呼吸節奏，能迅速穩定大腦神經、降低焦慮，引導身體進入放鬆狀態，讓我們更容易入睡並大幅提升睡眠質素。\n\n當睡眠充足了，心靈自然感到和諧充實，皮膚也能由內而外展現出極致的美麗與紅潤健康的面色。\n\n正如 Chanel 女士所體現的精神——真正的優雅與美麗，始於對自我身心靈的極致呵護。", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 名人金句引出痛点 → 剖析睡眠与衰老关系 → 给出声疗解压方案 → 呼吁身心呵护\n为什么火: 借势Chanel经典语录赋能女性抗衰，将睡眠与高级感美学完美结合。\n改编角度: 结合香奈儿语录，将精油助眠与精品咖啡晨间仪式感挂钩，打造全天候身心奢华呵护。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅現代人以為，想將身體同心靈調整好，一定要花好多時間去重新開始，或者放棄手頭嘅事業。\n\n其實唔係咁嘅。真正的關鍵，往往在於你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n第一樣嘢，是要學識將念頭靜落嚟。每日花少少時間，用呼吸同埋聞一下優質嘅咖啡，去陪伴自己。透過這個日常練習，把心靈的雜訊慢慢清零，找回原本就屬於你的內在力量。\n\n第二樣嘢，是要給身體時間去慢慢調整。香港人平時好重視工作，往往忽略咗身體需要時間沉澱。你可以試試用自家製的精油來滋養自己，配合呼吸和冥想靜心，讓身體自然通暢，mindset 亦會跟住變得好清晰。\n\n第三樣嘢，是可以參與由老師帶領的 28 天咖啡療癒。透過這段時間的陪伴，去發掘自己潛在的潛質，學習如何在日常生活中照顧自己，逐步成為真正嘅自己。\n\n以前嘅你，可能日日都處於高壓狀態，念頭亂糟糟，連好好抖氣的時間都冇。\n\n用對方法以後，你會開始懂得觀照自己的狀態，念頭靜落嚟，心靈感到和諧充實，連身體都慢慢回到通暢的節奏。\n\n如果你都想搵到自己嘅人生方向，可以私訊我了解人生方向諮詢。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "", "bait": false, "type": "Carousel", "likes": -1, "comments": 2, "er": 0.01, "followers": 16468, "date": "2026-09-27", "url": "https://www.instagram.com/p/DdybUVsnegn/", "video": false, "ratio": 0, "score": 0.04, "status": "未处理", "x": 0.4}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const SUPA = 'https://ymphortztvjmomuvmzfe.supabase.co';
+const ANON = 'sb_publishable_hOjyo3h9j43gnhB0RaQF9Q_J9r3uNwS';
+document.getElementById('updated').textContent = '数据更新于 2026-11-13 11:37 (GMT+8)';
+
+const $ = id => document.getElementById(id);
+const I = n => '<svg class="ic"><use href="#i-' + n + '"/></svg>';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : String(n);
+const getKey = () => ANON;  // anon key is baked in — safe, can only change status
+const firstLine = c => ((c || '').split('\n').map(l => l.trim()).filter(Boolean)[0] || '(无文案)');
+const byRec = {}; DATA.forEach(d => byRec[d.id] = d);
+
+function toast(msg, ok) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  t.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ---- mission card ----
+function renderMission() {
+  const role = localStorage.getItem('tm_role') || '';
+  const name = localStorage.getItem('tm_name') || '';
+  const pend = DATA.filter(d => d.status === '未处理').length;
+  const hot = DATA.filter(d => d.status === '未处理' && (d.x || 0) >= 2).length;
+  const queue = DATA.filter(d => d.status === '拍摄中').length;
+  const done = DATA.filter(d => d.status === '已处理').length;
+  const m = $('mission');
+  if (role === 'Marketer') {
+    m.innerHTML = '<div class="mt">' + I('flame') + esc(name) + ',任务:从待挑选里选出值得拍的</div>'
+      + '<div class="md">待挑选 <b>' + pend + '</b> 条(其中真爆款 ×2+ 有 <b>' + hot + '</b> 条)'
+      + ' · 从下面清单直接选,或去雷达细看</div>';
+  } else if (role === 'Content Creator') {
+    m.innerHTML = '<div class="mt">' + I('video') + esc(name) + ',任务:清空拍摄中队列</div>'
+      + '<div class="md">队列还有 <b>' + queue + '</b> 条待做 · 已完成共 <b>' + done + '</b> 条</div>';
+  } else {
+    m.innerHTML = '<div class="mt">' + I('flame') + '团队概览</div>'
+      + '<div class="md">待挑选 <b>' + pend + '</b> 条 · 拍摄中 <b>' + queue + '</b> 条 · 已完成 <b>' + done + '</b> 条</div>';
+  }
+}
+
+function orderSections() {
+  // Marketer sees picks first; Creator sees shooting queue first
+  if ((localStorage.getItem('tm_role') || '') === 'Marketer') {
+    $('secShoot').parentNode.insertBefore($('secPick'), $('secShoot'));
+  } else {
+    $('secPick').parentNode.insertBefore($('secShoot'), $('secPick'));
+  }
+}
+
+// ---- identity ----
+function meLabel() {
+  const n = localStorage.getItem('tm_name'), r = localStorage.getItem('tm_role');
+  $('meLabel').innerHTML = n ? '<b>' + esc(n) + '</b>&nbsp;· ' + esc(r || '') : '未登记';
+}
+function showOverlay() {
+  $('oName').value = localStorage.getItem('tm_name') || '';
+  $('oRole').value = localStorage.getItem('tm_role') || 'Marketer';
+  $('overlay').classList.add('show');
+}
+$('oSave').onclick = () => {
+  const n = $('oName').value.trim();
+  if (!n) { $('oName').focus(); return; }
+  localStorage.setItem('tm_name', n);
+  localStorage.setItem('tm_role', $('oRole').value);
+  $('overlay').classList.remove('show');
+  meLabel(); orderSections(); renderMission();
+  refreshStatuses();
+};
+$('meBtn').onclick = showOverlay;
+meLabel();
+if (!localStorage.getItem('tm_name')) showOverlay();
+
+// ---- tabs ----
+document.querySelectorAll('.ntab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.ntab').forEach(x => x.classList.toggle('on', x === t));
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('on', p.id === 'p-' + t.dataset.p));
+  if (t.dataset.p === 'radar' && !$('radarWrap').querySelector('iframe')) {
+    const f = document.createElement('iframe'); f.src = 'index.html'; $('radarWrap').appendChild(f);
+  }
+});
+
+// ---- status write ----
+async function setStatus(d, val) {
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?post_id=eq.' + encodeURIComponent(d.id), {
+      method: 'PATCH',
+      headers: { 'apikey': ANON, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: val })
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    d.status = val;
+    cacheStatus(d.id, val);
+    toast('✓ @' + d.competitor + ' → ' + val, true);
+  } catch (e) {
+    toast('失败: ' + e.message, false);
+  }
+  renderWork();
+}
+
+// ---- 今日工作 ----
+function pillBtn(cls, icon, label) {
+  return '<button class="pill ' + cls + '">' + I(icon) + label + '</button>';
+}
+
+function renderWork() {
+  const pend = DATA.filter(d => d.status === '未处理');
+  const shoot = DATA.filter(d => d.status === '拍摄中');
+  const done = DATA.filter(d => d.status === '已处理');
+  $('stPending').textContent = pend.length;
+  $('stShoot').textContent = shoot.length;
+  $('stDone').textContent = done.length;
+
+  // shooting queue
+  const sl = $('shootList'); sl.innerHTML = '';
+  if (!shoot.length) sl.innerHTML = '<div class="none">队列是空的 — Marketer 去爆款雷达挑几条拖进「拍摄中」</div>';
+  shoot.forEach(d => {
+    const r = document.createElement('div'); r.className = 'row';
+    r.innerHTML = '<a class="who2" href="https://www.instagram.com/' + d.competitor + '/" target="_blank">@' + esc(d.competitor) + '</a>'
+      + ((d.x || 0) >= 2 ? '<span class="xb">×' + d.x + '</span>' : '')
+      + '<span class="hookline">' + esc(firstLine(d.caption)) + '</span>'
+      + '<a class="pill" href="' + d.url + '" target="_blank">' + I('ext') + '原帖</a>'
+      + pillBtn('ok', 'check', '完成') + pillBtn('bad', 'x', '退回');
+    const btns = r.querySelectorAll('button');
+    btns[0].onclick = () => setStatus(d, '已处理');
+    btns[1].onclick = () => setStatus(d, '未处理');
+    sl.appendChild(r);
+  });
+
+  // picks
+  const picks = pend.filter(d => (d.x || 0) >= 2).sort((a, b) => (b.x || 0) - (a.x || 0)).slice(0, 8);
+  const pl = $('pickList'); pl.innerHTML = '';
+  if (!picks.length) pl.innerHTML = '<div class="none">暂时没有 ×2 以上的未处理爆款 — 等周一自动抓新数据</div>';
+  picks.forEach(d => {
+    const r = document.createElement('div'); r.className = 'row';
+    r.innerHTML = '<span class="xb">×' + d.x + '</span>'
+      + '<a class="who2" href="https://www.instagram.com/' + d.competitor + '/" target="_blank">@' + esc(d.competitor) + '</a>'
+      + '<span class="hookline">' + esc(firstLine(d.caption))
+      + '<small>🔥' + d.score + ' · ER ' + d.er + '% · 💬' + fmt(d.comments) + '</small></span>'
+      + '<a class="pill" href="' + d.url + '" target="_blank">' + I('ext') + '原帖</a>'
+      + pillBtn('ok', 'video', '选中拍摄') + pillBtn('bad', 'x', '跳过');
+    const btns = r.querySelectorAll('button');
+    btns[0].onclick = () => setStatus(d, '拍摄中');
+    btns[1].onclick = () => setStatus(d, '跳过');
+    pl.appendChild(r);
+  });
+  renderMission();
+}
+
+function applyStatusCache() {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    Object.keys(c).forEach(rid => { const d = byRec[rid]; if (d) d.status = c[rid]; });
+  } catch (e) {}
+}
+
+function cacheStatus(rid, val) {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    c[rid] = val; localStorage.setItem('st_cache', JSON.stringify(c));
+  } catch (e) {}
+}
+
+// ---- live statuses from Supabase ----
+async function refreshStatuses() {
+  applyStatusCache(); renderWork();  // last-known statuses first
+  if (Date.now() - (+localStorage.getItem('st_ts') || 0) < 600000) return;  // 10-min throttle
+  localStorage.setItem('st_ts', String(Date.now()));
+  const fresh = {};
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?select=post_id,status', { headers: { 'apikey': ANON } });
+    if (!r.ok) return;
+    (await r.json()).forEach(row => {
+      const d = byRec[row.post_id];
+      if (d) d.status = row.status || '未处理';
+      if (row.status && row.status !== '未处理') fresh[row.post_id] = row.status;
+    });
+    localStorage.setItem('st_cache', JSON.stringify(fresh));
+    renderWork();
+  } catch (e) {}
+}
+
+orderSections();
+renderMission();
+renderWork();
+refreshStatuses();
+</script>
+</body>
+</html>

@@ -1,25 +1,540 @@
 <!DOCTYPE html>
-<html lang="zh"><head>
+<html lang="zh">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="60">
-<title>爆款雷达 · 还在加载</title>
+<title>premium coffee and essential oil </title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-       background:#0a0d13;color:#e8e8ea;text-align:center;padding:24px;
-       font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
-  .spin{width:34px;height:34px;margin:0 auto 26px;border:3px solid #2a2f3a;
-        border-top-color:#ff785a;border-radius:50%;animation:s 1s linear infinite}
-  @keyframes s{to{transform:rotate(360deg)}}
-  h1{font-size:23px;margin:0 0 14px;font-weight:600}
-  p{margin:8px 0;color:#9a9aa2;font-size:15px;line-height:1.75}
-  .hint{margin-top:30px;font-size:13.5px;color:#6e6e78}
-  @media(prefers-reduced-motion:reduce){.spin{animation:none}}
-</style></head><body><div>
-  <div class="spin"></div>
-  <h1>你的页面还在加载中,请稍等</h1>
-  <p>第一次大约需要 20-60 分钟。</p>
-  <p>这一页会自己刷新,你可以先去忙别的。</p>
-  <p class="hint">等很久都没变?回到安装 SOP 第 7 步,<br>到仓库的 Actions 看 Sync Content 有没有跑完。</p>
-</div></body></html>
+  :root {
+    --bg: #0a0d13;
+    --card: #11151d;
+    --card-hi: #151a24;
+    --border: #1d2430;
+    --border-hi: #2c3546;
+    --text: #e8ecf3;
+    --muted: #8a94a6;
+    --faint: #5b6577;
+    --accent: #5ea1ff;
+    --green: #3fd68f;
+    --orange: #f0a33f;
+    --pink: #ff6b9d;
+    --red: #ff5c5c;
+    --fire1: #ff8a3d;
+    --fire2: #ff4d6d;
+    --font: 'Inter', -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --disp: 'Space Grotesk', 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scrollbar-color: #232c3b var(--bg); }
+  body { background: var(--bg); color: var(--text); font-family: var(--font);
+    -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(94,161,255,.3); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #232c3b; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2c3546; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+  .ic { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round; fill: none; flex: none; }
+
+  header { position: sticky; top: 0; z-index: 50; background: rgba(10,13,19,.86);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border); padding: 13px 20px 12px; }
+  .hrow { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; max-width: 1440px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+  .mark { width: 31px; height: 31px; border-radius: 9px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--fire1), var(--fire2));
+    box-shadow: 0 4px 16px rgba(255,92,80,.35); }
+  .mark .ic { width: 17px; height: 17px; color: #fff; }
+  h1 { font-family: var(--disp); font-size: 16.5px; font-weight: 700; letter-spacing: .2px; white-space: nowrap; line-height: 1.15; }
+  h1 small { display: block; color: var(--faint); font-family: var(--font); font-weight: 400;
+    font-size: 10.5px; letter-spacing: 0; }
+
+  .search { position: relative; }
+  .search > .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--faint); width: 13.5px; pointer-events: none; }
+  input#fSearch { background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 12px 8px 32px; font-size: 13px; font-family: var(--font);
+    width: 200px; transition: border-color .18s, background .18s; }
+  input#fSearch:hover { border-color: var(--border-hi); }
+  input#fSearch:focus { border-color: var(--accent); outline: none; }
+  input#fSearch::placeholder { color: var(--faint); }
+
+  select, .btn { background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 11px; font-size: 13px; font-family: var(--font);
+    cursor: pointer; transition: border-color .18s, background .18s, color .18s;
+    display: inline-flex; align-items: center; gap: 6px; }
+  select:hover, .btn:hover { border-color: var(--border-hi); background: var(--card-hi); }
+  .btn:active { transform: scale(.97); }
+  .btn.on { border-color: var(--accent); color: var(--accent); background: rgba(94,161,255,.08); }
+
+  .tabs { display: flex; gap: 7px; flex-wrap: wrap; max-width: 1440px; margin: 12px auto 0; }
+  .tab { display: inline-flex; align-items: center; gap: 7px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 6.5px 14px;
+    font-size: 13px; color: var(--muted); cursor: pointer; user-select: none;
+    transition: border-color .18s, background .18s, color .18s, transform .18s; }
+  .tab:hover { border-color: var(--border-hi); color: var(--text); }
+  .tab .cnt { font-family: var(--disp); font-weight: 600; font-size: 11px;
+    background: rgba(255,255,255,.06); padding: 1.5px 7.5px; border-radius: 99px;
+    font-variant-numeric: tabular-nums; }
+  .tab.on { color: var(--text);
+    background: linear-gradient(135deg, rgba(255,138,61,.15), rgba(255,77,109,.15));
+    border-color: rgba(255,120,90,.45); }
+  .tab.on .cnt { background: rgba(255,120,90,.25); }
+  body.dragging .tab.droppable { border-style: dashed; border-color: var(--accent); }
+  .tab.over { background: rgba(94,161,255,.22); color: var(--text); transform: scale(1.07); }
+
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; max-width: 1440px; margin: 9px auto 0; align-items: center; }
+  .chips .lbl { font-size: 12px; color: var(--faint); margin-right: 2px; }
+  .chip2 { display: inline-flex; align-items: center; gap: 5.5px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 4.5px 12px;
+    font-size: 12px; color: var(--muted); cursor: pointer; user-select: none;
+    transition: border-color .18s, color .18s, background .18s;
+    font-variant-numeric: tabular-nums; }
+  .chip2 .ic { width: 12.5px; height: 12.5px; }
+  .chip2:hover { border-color: var(--border-hi); color: var(--text); }
+  .chip2.on { border-color: rgba(240,163,63,.6); color: var(--orange); background: rgba(240,163,63,.08); }
+
+  main { max-width: 1440px; margin: 22px auto; padding: 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(305px, 1fr)); gap: 18px; }
+
+  .card { position: relative; background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), border-color .22s, box-shadow .22s;
+    animation: fadeUp .45s cubic-bezier(.2,.7,.3,1) both; }
+  .card:hover { transform: translateY(-3px); border-color: var(--border-hi);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45); }
+  .card.outlier::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fire1), var(--fire2)); z-index: 2; }
+  .card[draggable] { cursor: grab; }
+  .card.lifting { opacity: .45; }
+  .card.saved { border-color: var(--green); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .embed { position: relative; width: 100%; aspect-ratio: 4/5; background: #080b10; }
+  .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .embed .ph { position: absolute; inset: 0; display: grid; place-items: center;
+    background: linear-gradient(110deg, #0b0e15 8%, #121826 18%, #0b0e15 33%);
+    background-size: 200% 100%; animation: shimmer 1.5s linear infinite; }
+  .embed .ph .ic { width: 30px; height: 30px; color: #2a3342; stroke-width: 1.6; }
+  @keyframes shimmer { to { background-position-x: -200%; } }
+
+  .meta { padding: 13px 15px 14px; display: flex; flex-direction: column; gap: 9px; }
+  .row1 { display: flex; align-items: center; gap: 7px; font-size: 13px; flex-wrap: wrap; }
+  .handle { color: #3a4456; cursor: grab; display: inline-flex; }
+  .handle .ic { width: 13px; height: 13px; }
+  .who { font-weight: 600; color: var(--accent); text-decoration: none; }
+  .who:hover { text-decoration: underline; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 500;
+    padding: 2.5px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .badge .ic { width: 10.5px; height: 10.5px; }
+  .badge.bnew { color: var(--pink); border-color: rgba(255,107,157,.45); background: rgba(255,107,157,.07); }
+  .badge.bhorse { color: var(--orange); border-color: rgba(240,163,63,.45); background: rgba(240,163,63,.07); }
+  .badge.bbait { color: var(--accent); border-color: rgba(94,161,255,.4); background: rgba(94,161,255,.07); }
+  .date { margin-left: auto; color: var(--faint); font-size: 11px; font-variant-numeric: tabular-nums; }
+
+  .nums { display: flex; gap: 6px; flex-wrap: wrap; }
+  .num { display: inline-flex; align-items: center; gap: 5px; background: #0c0f16;
+    border: 1px solid var(--border); border-radius: 9px; padding: 5px 9px;
+    font-size: 11px; color: var(--muted); }
+  .num .ic { width: 11.5px; height: 11.5px; }
+  .num b { font-family: var(--disp); color: var(--text); font-size: 12.5px; font-weight: 600;
+    font-variant-numeric: tabular-nums; }
+  .num.hot { border-color: rgba(255,122,77,.35); }
+  .num.hot .ic, .num.hot b { color: #ff7a4d; }
+  .num.x { border-color: rgba(240,163,63,.35); }
+  .num.x .ic, .num.x b { color: var(--orange); }
+  .num.er .ic, .num.er b { color: var(--green); }
+
+  .cap { color: var(--muted); font-size: 12.5px; line-height: 1.55; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+  .cap.open { -webkit-line-clamp: unset; }
+  .cap b { color: var(--text); font-weight: 600; }
+  .ai { border-left: 2px solid var(--orange); background: rgba(240,163,63,.06);
+    padding: 8px 11px; border-radius: 0 10px 10px 0; font-size: 12px; line-height: 1.65;
+    color: var(--muted); }
+  .ai b { color: var(--orange); font-weight: 600; }
+  .mine { border-left: 2px solid var(--green); background: rgba(63,214,143,.06);
+    padding: 8px 11px; border-radius: 0 10px 10px 0; font-size: 12px; line-height: 1.65;
+    color: var(--muted); cursor: pointer; display: -webkit-box; -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }
+  .mine.open { -webkit-line-clamp: unset; }
+  .mine b { color: var(--green); font-weight: 600; }
+
+  .srow { display: flex; align-items: center; gap: 7px; }
+  .srow label { font-size: 12px; color: var(--faint); }
+  .status { flex: 1; padding: 6px 9px; font-size: 12.5px; }
+  .status.s未处理 { color: var(--muted); }
+  .status.s拍摄中 { color: var(--orange); border-color: rgba(240,163,63,.5); }
+  .status.s已处理 { color: var(--green); border-color: rgba(63,214,143,.5); }
+  .status.s跳过 { color: var(--red); border-color: rgba(255,92,92,.5); }
+  .abtn { display: inline-flex; align-items: center; gap: 5px; background: #0c0f16;
+    color: var(--muted); border: 1px solid var(--border); border-radius: 9px;
+    padding: 6px 10px; font-size: 11.5px; font-family: var(--font); cursor: pointer;
+    text-decoration: none; transition: color .18s, border-color .18s, transform .1s; }
+  .abtn .ic { width: 12px; height: 12px; }
+  .abtn:hover { color: var(--accent); border-color: rgba(94,161,255,.5); }
+  .abtn:active { transform: scale(.95); }
+
+  .more { text-align: center; margin: 28px 0 44px; }
+  .more button { background: var(--card); color: var(--accent); border: 1px solid var(--border);
+    border-radius: 12px; padding: 11px 30px; font-size: 14px; font-family: var(--font);
+    cursor: pointer; transition: border-color .18s, background .18s; }
+  .more button:hover { border-color: var(--border-hi); background: var(--card-hi); }
+
+  .empty { color: var(--faint); text-align: center; padding: 70px 0; display: flex;
+    flex-direction: column; align-items: center; gap: 12px; font-size: 14px; }
+  .empty .ic { width: 34px; height: 34px; stroke-width: 1.5; color: #2c3546; }
+
+  footer { color: var(--faint); font-size: 11px; text-align: center; padding: 22px; }
+
+  #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: var(--card-hi); border: 1px solid var(--border-hi); border-radius: 11px;
+    padding: 11px 20px; font-size: 13px; display: none; z-index: 99; opacity: 0;
+    box-shadow: 0 12px 32px rgba(0,0,0,.5); transition: opacity .2s, transform .2s; }
+  #toast.show { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.5l7.1-.6z"/></symbol>
+  <symbol id="i-magnet" viewBox="0 0 24 24"><path d="m6 15-4-4 6.75-6.77a7.79 7.79 0 0 1 11 11L13 22l-4-4 6.39-6.36a2.14 2.14 0 0 0-3-3L6 15"/><path d="m5 8 4 4"/><path d="m12 15 4 4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m10 8 6 4-6 4Z"/><rect x="2" y="4" width="20" height="16" rx="3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+</svg>
+<header>
+  <div class="hrow">
+    <div class="brand">
+      <div class="mark"><svg class="ic"><use href="#i-flame"/></svg></div>
+      <h1>premium coffee and essential oil <small id="updated"></small></h1>
+    </div>
+    <div class="search"><svg class="ic"><use href="#i-search"/></svg>
+      <input id="fSearch" placeholder="搜文案 / hashtag / 账号"></div>
+    <select id="fTracker"><option value="">全部 Tracker</option></select>
+    <select id="fComp"><option value="">全部 Competitor</option></select>
+    <select id="fSort">
+      <option value="x">按 爆款倍数 (vs 自家平均)</option>
+      <option value="score">按 Viral Score</option>
+      <option value="er">按 Engagement Rate</option>
+      <option value="comments">按 Comments</option>
+      <option value="likes">按 Likes</option>
+      <option value="date">按 最新日期</option>
+    </select>
+    <button class="btn" id="fVideo"><svg class="ic"><use href="#i-video"/></svg>只看视频</button>
+
+    <a class="btn" href="team.html" target="_top" title="工作台"><svg class="ic"><use href="#i-users"/></svg>工作台</a>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="chips" id="presets"></div>
+  <div class="chips" id="trends"></div>
+</header>
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none"><svg class="ic"><use href="#i-search"/></svg>没有符合条件的帖子</div>
+  <div class="more" id="moreWrap" style="display:none"><button id="moreBtn">载入更多</button></div>
+</main>
+<footer>数据来源 Supabase · 每周自动更新 · 状态更改即时同步全团队 · 视频由 Instagram 官方 embed 播放</footer>
+<div id="toast"></div>
+<script id="data" type="application/json">[{"id": "DfWY51YGZLi", "tracker": "premium coffee and essential oil  竞对", "competitor": "memoireacademy", "caption": "🌿 【香薰入門證書課程】現正招生！ ✨\n給自己 4 小時的時間，走進香薰的療癒世界，學習用天然精油照顧自己與家人身心健康。\n💡 課程亮點：\n 了解精油與植物底油基礎及安全使用方法\n 學習將香薰融入日常舒壓與生活應用\n 現場親手製作 10ml 天然護膚油 1 支（價值 $280）\n 完課獲頒 修讀證書 乙張\n🗓 時間： 1:00 PM – 5:00 PM (4小時)\n💰 優惠體驗價： $800 (原價 $1800)\n📍 地點： 尖沙咀北京道53-63號國都大廈9樓902室\n📩 名額有限，歡迎 DM 查詢或報名！\n#MemoireAcademy #PPAHK #香薰治療 #精油入門 #身心平衡", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 痛点引入 → 课程亮点 → 体验价值 → 行动呼吁\n为什么火: 精准切入都市人身心舒压需求，高性价比与证书赋能降低决策门槛。\n改编角度: 突出“4小时速成天然精油保养”结合“高端咖啡品鉴”，吸引追求品质生活的白领。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅現代人，每日拼命工作，心裡好想將個念頭靜落嚟，但總覺得要學好多好複雜嘅技巧，或者要花好多時間先可以調整狀態。\n\n其實唔係嘅。\n\n調整身體需要時間，最緊要嘅係你有冇內在力量同覺知去認識自己。\n\n第一，每日試下用呼吸同聞咖啡來做一個鐘頭嘅靜心練習，幫自己慢慢清零。\n呢個方法好簡單，唔需要你離開現時嘅工作，只需要你將注意力帶返當下，感受自己嘅呼吸，背後嘅嘢可以逐步了解。\n\n第二，揀一支自家製嘅優質精油，比如 HK$468 一支嘅精油，喺日常生活中幫自己放鬆。\n當你聞到呢個香味嘅時候，可以好清明咁樣看到自己嘅方向，念頭自然會靜落嚟。\n\n第三，參加 28 天咖啡療癒，由老師帶領你每日進行練習。\n呢個過程包含咗好多創作同覺知，可以有體驗再去選擇咯，幫你發掘自己嘅潛在潛質。\n\n有一位中年嘅朋友，佢好想轉型做身心靈工作，但有家庭負擔，未走出舒適圈，遲遲都唔知自己想點。\n佢嚟搵我做人生方向諮詢嘅時候，我問佢同樣嘅問題：你想成為一個點樣嘅人？\n調整咗心態之後，佢慢慢搵到自己嘅內在力量，喺原本嘅生活入面找到真正嘅自己。\n\n背後嘅嘢可以逐步了解，因為調整身體需要時間。\n如果你都想好清明咁樣認識自己，歡迎你隨時私信我了解人生方向諮詢。", "tags": "MemoireAcademy, PPAHK, 香薰治療, 精油入門, 身心平衡", "bait": false, "type": "Carousel", "likes": 2, "comments": 0, "er": 0.14, "followers": 1423, "date": "2026-11-05", "url": "https://www.instagram.com/p/DfWY51YGZLi/", "video": false, "ratio": 0, "score": 0.14, "status": "未处理", "x": 0}, {"id": "DfCZU9GHXBL", "tracker": "premium coffee and essential oil  竞对", "competitor": "reiki_journey_hk", "caption": "👼🏻👼🏻👼🏻\n\n這陣子，身邊不少人都過得有些吃力。\n\n有人經歷了工作環境的驟變，一時間失去了原本的步調；\n\n有人在職場裡明明很努力，卻換來排擠與欺凌；\n\n也有人因為一時的善良，不幸落入騙局的陷阱。\n\n看著身邊那些帶著淚水、寫滿委屈的臉龐，我知道，很多人都在深夜裡一遍又一遍地怪責自己：「是不是因為我總想著負面的事，才把這些厄運吸引過來？」\n\n或者焦慮地懷疑：「這是不是我的因果業力？我是不是不夠正念，才會落得這個下場？」\n\n其實，這一切絕對不是你的錯。你沒有做錯任何事，請不要再用這些理論來懲罰自己了。\n\n很多人誤解了吸引力法則，以為只要心裡有一絲恐懼、有一天不夠正面，就會招來災難。\n\n這種想法，其實是對受害者的二次傷害。\n\n當你遇上不公義的事情，你感到憤怒、悲傷、委屈，這不過是人類最誠實、最健康的心理反應。\n\n如果連受傷時哭泣的權利都要被剝奪，那不叫修行，那叫自我壓抑。\n\n環境的更迭只是經濟洪流的變動，職場的欺凌是施害者自身的扭曲，騙子的詐騙是源於他們的貪婪——這些都是外在世界的風雨，絕對不是你心靈投射出來的懲罰。\n\n業力，也從來不是一種報應。遇到壞事，並不代表你是一個失敗的人。\n\n生命中那些最難捱的關口，不過是一場靈魂的歷練。\n\n正因為你已經成長得足夠成熟，才準備好在這場風暴中，學會如何看清真相、如何保護自己，並在跨過這道難關之後，熬出屬於自己的底氣。\n\n真正的正能量，從來不是強顏歡笑，也不是硬逼自己每天都要保持積極。\n\n真正的力量，是全然的接納。\n\n當你不再把力氣拿去自責，你才有能量去滋養自己。\n\n那些傷害你的人和事，總有一天會隨風而去；\n\n但你對自己的愛，會陪你走過所有風雨。\n\n你做得很好，你已經非常勇敢了。", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 共情受挫现状 → 拆除受害者自责谬论 → 给出正能量新定义 → 结尾温柔赋能\n为什么火: 精准捕捉都市人群内耗与精神疲惫，用高情绪价值的文字实现深度心理治愈。\n改编角度: 结合咖啡与精油，讲述职场受挫时如何用一杯精品咖啡与疗愈精油找回内在底气。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n這陣子，身邊不少高壓專業人士與創業者過得有些吃力。\n有人經歷了工作環境的驟變，一時間失去了原本的步調。\n明明每天加班工作很努力，卻換來職場裡的各種排擠與無奈。\n很多人都在深夜裡一遍又一遍地怪責自己：「是不是我哪裡做錯了？」\n或者焦慮地懷疑：「我是不是不夠正念，才會落得這個下場？」\n其實，這一切絕對不是你的錯，請不要再這樣懲罰自己了。\n很多人以為，只要心裡有一絲恐懼、有一天不夠正面，就會招來災難。\n這種想法，其實是對自己的一種二次傷害。\n當你遇上不公義的事情，你感到憤怒、悲傷、委屈，這不過是人類最誠實的心理反應。\n如果連受傷時哭泣的權利都要被剝奪，那不叫修行，那叫自我壓抑。\n環境的更迭只是洪流的變動，職場的壓力是外在世界的風雨。\n這絕對不是你心靈投射出來的懲罰，你不需要把所有責任都扛在自己身上。\n生命中那些最難捱的關口，需要調整你有冇內在力量與覺知去認識自己。\n正因為你已經準備好了，才學會如何看清真相、如何保護自己。\n真正的正能量，從來不是強顏歡笑，也不是硬逼自己每天都要保持積極。\n真正的力量，是全然的接納，好清明咁樣看到這個方向。\n當你不再把力氣拿去自責，你才有能量去滋養自己。\n你可以選擇每天花一點時間，泡一杯好優質嘅咖啡，讓念頭靜落嚟。\n用呼吸與聞咖啡的過程，搭配輕柔的靜心，大概一個鐘頭的時間。\n背後嘅嘢可以逐步了解，因為其實調整身體需要時間嘅，慢慢把狀態找回來。\n以前你總是拼命賺錢卻內耗不斷，身體發出疲憊的信號卻被你忽略了。\n用對方法以後，你開始懂得照顧自己，找回原本就屬於你的內在力量。\n如果你也想尋找一個自我喺呢個世界嘅使命，或是想了解人生方向諮詢。\n現在就私信我，領取咖啡五臟顯化冥想指南，開始每天的靜心練習。\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "", "bait": false, "type": "Carousel", "likes": -1, "comments": 6, "er": 0.03, "followers": 16468, "date": "2026-10-28", "url": "https://www.instagram.com/p/DfCZU9GHXBL/", "video": false, "ratio": 0, "score": 0.11, "status": "未处理", "x": 1.2}, {"id": "DehBzAVHU3o", "tracker": "premium coffee and essential oil  竞对", "competitor": "reiki_journey_hk", "caption": "👼🏻👼🏻👼🏻\n\n傳統傳承的「減法智慧」，與現代流派的「廣納百川」\n\n近年香港的身心靈界發展蓬勃，頌缽（Singing Bowls）走進了許多人的生活。隨之而來的是，市場上出現了各種不同的手法、理論與技術。這本是一件美事，代表有更多人能透過聲音找到內心的平靜。\n\n在百花齊放的背後，有時也會出現派系間的對立。習惯用自己的標準，去評判其他導師及療癒師的手法。\n\n作為一名教授印度派系頌缽的導師，每當看到這些現象，我總會反思：我們在敲響頌缽、清理他人負能量的同時，自己內心的「驕傲」與「評判」，又是否有被好好清理？\n\n聲音是流動的，傲慢卻會將心封閉\n\n「療癒」的核心，是接納與和諧。如果一位聲音療癒者心中帶著強烈的階級觀念、門戶之見，覺得「只有我的派系最優越，其他都是錯的」，這種對立與仇視的思想一旦灌輸給學生，便違背了身心靈修習的初衷。\n\n因為每個流派都是一扇窗，讓我們從不同的視野，看見聲音蘊含的無限可能。\n\n讀懂流派的分別，才不會用「消費者的眼光」去評判\n\n現在的學生或客人，有時會不自覺地用「消費者買產品」的角度來看待身心靈課程——覺得課程內容要像套餐一樣「越豐富、越多花款、越包羅萬有，才叫性價比高」，甚至會批評某些傳統導師「教漏嘢（教少、教不全）」。\n\n這其實是因為大家不了解「傳統純正傳承」與「現代整合系統」的分別：\n\n傳統導師的「純正傳承（如尼泊爾、印度派系）」：\n\n傳統傳承講求的是「深度」而非「廣度」。例如我所教授的印度派系，它有著數千年阿育吠陀與吠陀醫學的根基，講求精準的身體脈輪對位、能量管道（Nadis）的調和，以及敲缽者自身的內在修持。傳統系統不會在一堂課裡塞滿五花八門的西方科學儀器或揉合各國手法，因為它專注於將單一系統做到極致、精純。\n\n現代新派導師的「整合系統」：\n 現在有些導師，會結合現代聲學、腦波理論（科學頌缽）以及不同流派的手法，編織出一套適合現代都市人快速減壓的整合系統。它的優點是「廣博、現代化、易於被城市人理解」，能從多維度提供解說。\n\n兩者沒有高低之分，只是前者的修行在於「深掘一口井」，後者的修行在於「廣納百川」。\n\n世上沒有完美的派系，只有當下最適合你身體和心靈的頻率。\n\n無論是古老神秘的尼泊爾傳承、嚴謹對位的印度吠陀系統，還是結合現代神經科學的西式頌缽，它們的終點都是一樣的——帶領靈魂回歸平靜。\n\n當我們能用包容的目光看待每一個流派，我們敲出來的", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 行业现状 → 核心矛盾 → 深度解析 → 包容呼吁\n为什么火: 直击身心灵圈内派系对立痛点，以大局观引发共鸣与深度反思\n改编角度: 探讨精品咖啡产地派系与精油疗法门户之见，倡导专注本质而非流派对立", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅現代人以為，想學識照顧自己、想將念頭靜落嚟，一定要去上好多唔同嘅堂，買晒所有最新嘅工具。\n\n其實唔係咁嘅，真正需要調整嘅，係你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n第一樣，透過每日嘅呼吸同靜心，去感受自己當下嘅狀態。你可以用大概一個鐘頭嘅時間，先將念頭靜落嚟，調整身體需要時間嘅，慢慢去發掘自己嘅潛在潛質。\n\n第二樣，你可以用一杯優質嘅療癒咖啡去幫手。例如我哋嘅療癒咖啡，價錢係港幣一百二十八蚊一盒，入面有五包獨立掛耳包。你可以好似平時飲咖啡咁，先去聞一聞香氣，然後去體會內在嘅覺知，令自己慢慢通暢。\n\n第三樣，配合自家製嘅精油一齊用。例如港幣四百六十八蚊一支嘅精油，每日喺日常生活中花少少時間去聞下，幫自己做一個好好嘅覺察同轉念，唔需要急，可以有體驗再去選擇咯。\n\n以前嘅我或者好多客人都好忙碌，對於工作好重視，就疏忽咗身體，成日覺得自己未清零而知，做咩都好似好重負擔咁。\n\n當你用對方法，每日花少少時間，用呼吸、咖啡同精油去陪伴自己，你會慢慢搵到自己喺呢個世界嘅使命，成為真正嘅自己。\n\n如果你都想開始呢個好清明嘅旅程，歡迎私信我，領取咖啡五臟顯化冥想指南，或者了解更多關於 28 天咖啡療癒。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "", "bait": false, "type": "Carousel", "likes": -1, "comments": 5, "er": 0.02, "followers": 16468, "date": "2026-10-15", "url": "https://www.instagram.com/p/DehBzAVHU3o/", "video": false, "ratio": 0, "score": 0.09, "status": "未处理", "x": 1.0}, {"id": "DetFP0rCXS_", "tracker": "premium coffee and essential oil  竞对", "competitor": "healing.museum", "caption": "「如何選擇才不會後悔？每次做決定都陷入選擇困難，又怕亂用靈擺會連結到低頻能量？」 🕊️✨\n\nHealing Museum－－誠意推介給想用靈擺為自己尋找指引的你🌙其實你需要的不是更多外在建議，而是一套安全、精準的直覺指引工具。\n\n✨想當年Bella老師學習的第一項靈性工具就是靈擺，深深體會到靈擺的實用。只要正確及安全連結，而且每個人也能輕鬆踏進靈性的大門，得到合適的指引。\n\n靈擺是一門可以學習的直覺工具，答案是否清晰，除了取決於提問方法，亦與使用的時機、心態及事前準備息息相關。\n\n很多人未曾學過這些基本觀念，便開始自行摸索，結果愈問愈迷惘，內心愈混亂。\n\n正確及安全地使用靈擺能讓你輕鬆解決日常奇難雜症，及步上人生神聖使命。利用靈擺帶領大家在靈性成長的道路上，找回自身神聖力量，並快速提昇自我。\n\n🕯️課程特色——\n⊹ 包涵詳細數千字彩色筆記及圖表\n⊹ 使用禁忌與正確提問方法\n⊹ 使用前的淨化與防護步驟\n⊹ 課堂實踐練習及個別指導\n⊹ 超濃縮精華課堂內容\n⊹ 分享選擇困難時實戰經驗\n⊹ 方式能輕鬆應用在日常生活\n\n【 連結天使靈擺課 】 實體小班來了✨歡迎攜帶自己心愛的靈擺\n\n✦ 2026年10月27日 ㊁\n時間：19:30pm – 22:15pm\n（時間因應同學課程進度而調節）\n\n地點 : 荔枝角區（鄰近地鐵站）\n形式：1－5人；小班教學實體課\n導師：Bella Poon\n\n能量交換：HKD$1,280；2人同行HKD$1,080\n🎁 凡報讀課程╲ 附送 .ᐟ ╱ ❝水晶靈擺❞乙個\n\n【報名】 💌 請即私訊 @healing.museum 報名或查詢\n\n✦ 本課程只設有實體授課\n✦ 本課堂並無宗教信仰，任何人士均可參與\n\n——\n\n𝐌𝐚𝐲 𝐚𝐥𝐥 𝐥𝐢𝐯𝐢𝐧𝐠 𝐛𝐞𝐢𝐧𝐠𝐬 𝐛𝐞 𝐟𝐫𝐞𝐞 𝐟𝐫𝐨𝐦 𝐬𝐮𝐟𝐟𝐞𝐫𝐢𝐧𝐠 𝐚𝐧𝐝 𝐚𝐭𝐭𝐚𝐢𝐧 𝐛𝐥𝐢𝐬𝐬.\n\n✶ 療癒水晶：可追蹤 @lunana.crystal\n✶ 身心療癒：可追蹤 @healing.museum\n\n——\n⠀\n#香港工作坊 #英國天使靈氣 #靈擺課程 #香港療癒師 #身心靈療癒", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 抛出选择困难痛点 → 揭示盲目摸索误区 → 给出专业工具解法 → 引导课程报名\n为什么火: 精准击中身心灵受众在关键抉择时的迷茫心理，提供低门槛的解决方案。\n改编角度: 结合精品咖啡与精油，痛点切入“如何选对适合自己当下频率的咖啡豆或精油”。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n每次做決定都陷入選擇困難？又或者好擔心自己未準備好，唔知道點樣去面對生活入面嘅轉變？\n\n好多人以為，要搵到人生方向，一定要花好多時間去重新開始。\n\n其實不是這樣的。\n\n你需要調整你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n今天想同你分享三個好簡單嘅日常練習。\n\n第一個練習是每日花一點時間靜落嚟。\n\n透過呼吸同聞咖啡，讓自己嘅念頭慢慢靜落嚟。\n\n背後嘅嘢可以逐步了解，因為其實調整身體需要時間嘅。\n\n第二個練習是學習帶著覺知去過每一日。\n\n當遇到生活同工作嘅挑戰時，先將個念頭停一停。\n\n呢種內在力量係你需要深度嘅覺知，同埋個身體好好通暢。\n\n第三個練習是給自己一個體驗再去選擇嘅空間。\n\n我哋有 28 天嘅咖啡療愈，會係由老師帶領。\n\n喺呢個過程入面，可以俾人哋嘗試佢哋每日練習。\n\n有位中年嘅朋友，好想轉型做佢想做嘅身心靈工作。\n\n但係因為佢未走出舒適圈，同埋有好多家庭負擔。\n\n所以遲遲都未好清明咁想知道自己做乜嘢。\n\n以前，佢一面對選擇就覺得好迷惘，唔知道點樣平衡生活同內心嘅想法。\n\n用咗呢啲方法之後，佢慢慢懂得將念頭靜落嚟，好清明咁樣看到自己真正想走嘅方向。\n\n你可以有體驗再去選擇咯。\n\n如果好想將個念頭靜落嚟，好想發掘自己嘅潛在嘅潛質。\n\n可以私訊我了解更多關於人生方向諮詢同 28 天咖啡療癒。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "香港工作坊, 英國天使靈氣, 靈擺課程, 香港療癒師, 身心靈療癒", "bait": false, "type": "Carousel", "likes": 18, "comments": 0, "er": 0.08, "followers": 22069, "date": "2026-10-20", "url": "https://www.instagram.com/p/DetFP0rCXS_/", "video": false, "ratio": 0, "score": 0.08, "status": "未处理", "x": 0}, {"id": "DfocVJUCfxb", "tracker": "premium coffee and essential oil  竞对", "competitor": "healing.museum", "caption": "【꧁英國天使靈氣©課程꧂】\n⠀\n英國天使靈氣©是一套溫和、簡單、任何人都可以學習的療癒系統。它匯聚天使王國純淨的能量，以及神聖源頭的智慧與無條件的愛。在課程中，你將學習與大天使、揚昇大師及星際療癒者攜手，為自己及所愛的人進行療癒——支持情緒、思維與靈性層面的釋放與平衡，並溫柔地照顧你的內在小孩。\n\n英國天使靈氣©屬輔助療癒系統，遍佈全球，系統具國際認受性，已在國際補充治療師協會（IICT）註冊，並於 The Healer Foundation 登記，附屬於英國補充醫學協會（BCMA）。不少學員為醫護人員，輔助及支援醫生、護士或患者。\n⠀\n🕯️甚麽人士適合參加？\n✶ 希望讓生命得到轉化、提昇\n✶ 願意脫離過往所有負面情緒及阻礙\n✶ 想學習用途廣泛、助人助己的療癒系統\n✶ 願意更多天使的光與愛帶進生命\n✶ 容許天使在你的生命中陪伴及支持\n\n——\n\n🕯國際認證英國官方天使靈氣© 一、二階證書課程（二天）\n日期：2026年11月28日 ㊅ – 11月29日 ㊐\n時間：10:30am – 6:30pm（因應同學課程進度而定，包括🍽午膳時間）\n地點 : 荔枝角區（鄰近地鐵站）\n形式：小班教學實體課（名額有限；不設遙距課程）\n官方認證導師：Bella Poon\n\n🕯️ 為甚麼要合報1-4階？\n✶ 官方推介的完整療癒手法 第1、2階讓你與天使王國建立連結，學習基本的療癒方法；第3、4階則深化這份連結，學習紮根，並完滿所有療癒手法。英國天使靈氣官方推介完成1-2階及3-4階，才是一套完整的自我療癒手法。\n\n✶ 循序漸進，學習不中斷 先完成1-2階，再與同班同學一起商議3-4階的上課日期。同一班同學一起成長，學習節奏更連貫。\n\n費用：\n➤ 一、二階公價HKD$4,680\n╲ 費用包括 .ᐟ ╱ 英國官方認證第一、二階中文課程手冊、導師整合補充筆記、英國官方證書、及Healing Museum獨有❝純天然列姆利亞❞大師水晶（產量稀少，先報先得，送完即止）\n\n➤ ⚜️ ╲ 合報優惠 .ᐟ ╱ ⚜️ 分開報讀1-2階及3-4階，原價合共 HKD$10,560；合報只需 HKD$9,504，節省 HKD$1,056。\n\n*如4人或以上同行，即可以包班上課，可約平日或假日授課\n\n· 課程將會在收妥全數課程費用後才獲確認\n· 此課程為國際認證課程，報名一經確定不得更改至其他課程或取消，亦不設退款，", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 痛点唤醒 → 疗癒方案 → 课程权益与优惠\n为什么火: 精准切中都市人群渴望内耗解脱与精神疗愈的深层心理需求。\n改编角度: 结合精品咖啡与精油，主打“一杯手冲与一滴精油，打造每日5分钟居家疗愈仪式”。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅香港人以為，想改變現狀就要辭職重新開始，或者花好多時間去重新學習一套專業技能。\n\n其實唔係咁樣。真正需要調整嘅，係你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n第一，喺日常生活中抽時間呼吸，先將個念頭靜落嚟。你可以試下聞住自家製嘅療癒咖啡，感受當下嘅溫度，調整自己嘅 mindset，慢慢釋放內在嘅壓力。\n\n第二，你可以透過簡單嘅日常練習去聆聽自己嘅聲音。不需要複雜嘅步驟，只要透過每日嘅呼吸同靜心，去發掘自己潛在嘅潛質，將未清零嘅部份慢慢清理。\n\n第三，背後嘅嘢可以逐步了解，因為其實調整身體需要時間嘅。你可以先參加 28 天咖啡療癒，由老師帶領，慢慢建立日常練習嘅習慣，可以有體驗再去選擇咯。\n\n以前嘅你，可能因為家庭同工作嘅負擔，覺得自己走唔出舒適圈，遲遲都未好清明咁知道自己想做乜嘢。\n\n用對方法以後，當你學識將念頭靜落嚟，就會搵到內在力量，好清明咁睇到自己真正想成為嘅人。\n\n如果你都想搵到自己嘅人生方向，可以私信我了解人生方向諮詢，或者一齊參與 28 天咖啡療癒。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "AngelicReiki, 英國天使靈氣, 靈氣療癒, 香港療癒", "bait": false, "type": "Carousel", "likes": 12, "comments": 0, "er": 0.05, "followers": 22069, "date": "2026-11-12", "url": "https://www.instagram.com/p/DfocVJUCfxb/", "video": false, "ratio": 0, "score": 0.05, "status": "未处理", "x": 0}, {"id": "DdybUVsnegn", "tracker": "premium coffee and essential oil  竞对", "competitor": "reiki_journey_hk", "caption": "👼🏻👼🏻👼🏻\n\nChanel女士曾說：「美麗從你決定成為自己的那一刻開始。」（Beauty begins the moment you decide to be yourself.） 她深知女人的美不單是外在的塗抹，更是由內而外散發的自信與生命力。\n\n她也曾說：「20歲的面貌是上天給你的，50歲的面貌是你自己決定的。」 這份「自己決定」的美麗，關鍵就在於我們對身體與心靈的日常滋養。\n\n規律的睡眠是維持身體及皮膚健康的根本基石。當我們進入深度睡眠，身體會啟動自我修復機制，加速皮膚新陳代謝，讓肌膚重拾彈性。\n\n為了達到高質量的睡眠，現代人常面臨壓力過大、難以入睡的困擾，此時聲音療癒（Sound Healing）與深層呼吸法就是最有效的天然處方。\n\n透過銅鑼、頌缽等療癒頻率，結合規律的呼吸節奏，能迅速穩定大腦神經、降低焦慮，引導身體進入放鬆狀態，讓我們更容易入睡並大幅提升睡眠質素。\n\n當睡眠充足了，心靈自然感到和諧充實，皮膚也能由內而外展現出極致的美麗與紅潤健康的面色。\n\n正如 Chanel 女士所體現的精神——真正的優雅與美麗，始於對自我身心靈的極致呵護。", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 名人金句引出痛点 → 剖析睡眠与衰老关系 → 给出声疗解压方案 → 呼吁身心呵护\n为什么火: 借势Chanel经典语录赋能女性抗衰，将睡眠与高级感美学完美结合。\n改编角度: 结合香奈儿语录，将精油助眠与精品咖啡晨间仪式感挂钩，打造全天候身心奢华呵护。", "my": "你想你將來嘅生活係點樣？你想成為一個點樣嘅人？\n\n好多高壓嘅現代人以為，想將身體同心靈調整好，一定要花好多時間去重新開始，或者放棄手頭嘅事業。\n\n其實唔係咁嘅。真正的關鍵，往往在於你有冇內在力量同覺知去認識自己，好清明咁樣看到呢一個方向。\n\n第一樣嘢，是要學識將念頭靜落嚟。每日花少少時間，用呼吸同埋聞一下優質嘅咖啡，去陪伴自己。透過這個日常練習，把心靈的雜訊慢慢清零，找回原本就屬於你的內在力量。\n\n第二樣嘢，是要給身體時間去慢慢調整。香港人平時好重視工作，往往忽略咗身體需要時間沉澱。你可以試試用自家製的精油來滋養自己，配合呼吸和冥想靜心，讓身體自然通暢，mindset 亦會跟住變得好清晰。\n\n第三樣嘢，是可以參與由老師帶領的 28 天咖啡療癒。透過這段時間的陪伴，去發掘自己潛在的潛質，學習如何在日常生活中照顧自己，逐步成為真正嘅自己。\n\n以前嘅你，可能日日都處於高壓狀態，念頭亂糟糟，連好好抖氣的時間都冇。\n\n用對方法以後，你會開始懂得觀照自己的狀態，念頭靜落嚟，心靈感到和諧充實，連身體都慢慢回到通暢的節奏。\n\n如果你都想搵到自己嘅人生方向，可以私訊我了解人生方向諮詢。\n\n我是古璟檑，陪你活出不費力的豐盛。", "tags": "", "bait": false, "type": "Carousel", "likes": -1, "comments": 2, "er": 0.01, "followers": 16468, "date": "2026-09-27", "url": "https://www.instagram.com/p/DdybUVsnegn/", "video": false, "ratio": 0, "score": 0.04, "status": "未处理", "x": 0.4}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const SUPA = 'https://ymphortztvjmomuvmzfe.supabase.co';
+const ANON = 'sb_publishable_hOjyo3h9j43gnhB0RaQF9Q_J9r3uNwS';
+const STATUSES = ["未处理", "拍摄中", "已处理", "跳过"];
+document.getElementById('updated').textContent = '更新于 2026-11-13 11:37 (GMT+8)';
+const PAGE = 48;
+let shown = PAGE;
+let videoOnly = false;
+let curTab = '全部';
+
+const $ = id => document.getElementById(id);
+const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : String(n);
+const getKey = () => ANON;  // anon key is baked in — safe, can only change status
+const I = n => '<svg class="ic"><use href="#i-' + n + '"/></svg>';
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const byRec = {}; DATA.forEach(d => byRec[d.id] = d);
+const TRENDS = [];
+DATA.forEach(d => {
+  d.days = d.date ? Math.max(0, Math.floor((Date.now() - new Date(d.date + 'T00:00:00')) / 864e5)) : null;
+  d.horse = d.followers > 0 && d.followers < 50000 && ((d.x || 0) >= 2 || d.score >= 10);
+});
+const PRESETS = [
+  { k: 'px', icon: 'trend', label: '真爆款 ×2+', f: d => (d.x || 0) >= 2 },
+  { k: 'pn', icon: 'star', label: '近7天', f: d => d.days !== null && d.days <= 7 },
+  { k: 'ph', icon: 'zap', label: '黑马', f: d => d.horse },
+  { k: 'pb', icon: 'magnet', label: '引流帖', f: d => d.bait },
+];
+const presetOn = {};
+
+function toast(msg, ok) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  t.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// filters
+const comps = [...new Set(DATA.map(d => d.competitor))].sort();
+comps.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = '@'+c; $('fComp').appendChild(o); });
+[...new Set(DATA.map(d => d.tracker))].forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; $('fTracker').appendChild(o); });
+
+function matchQ(d) {
+  const q = ($('fSearch').value || '').trim().toLowerCase();
+  return !q || (d.caption + ' ' + (d.tags || '') + ' ' + (d.transcript || '') + ' ' + (d.brk || '') + ' ' + d.competitor).toLowerCase().includes(q);
+}
+
+function basePool() {
+  const t = $('fTracker').value, c = $('fComp').value;
+  return DATA.filter(d => (!t || d.tracker === t) && (!c || d.competitor === c) && (!videoOnly || d.video)
+    && matchQ(d) && PRESETS.every(p => !presetOn[p.k] || p.f(d)));
+}
+
+function filtered() {
+  const s = $('fSort').value;
+  let arr = basePool().filter(d => curTab === '全部' || d.status === curTab);
+  const key = { score:'score', er:'er', comments:'comments', likes:'likes', x:'x' }[s];
+  if (s === 'date') arr.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  else arr.sort((a,b) => (b[key]||0) - (a[key]||0));
+  return arr;
+}
+
+let dragRec = null;
+
+function renderTabs() {
+  const pool = basePool();
+  const counts = { '全部': pool.length };
+  STATUSES.forEach(s => counts[s] = pool.filter(d => d.status === s).length);
+  $('tabs').innerHTML = '';
+  ['全部', ...STATUSES].forEach(name => {
+    const el = document.createElement('div');
+    el.className = 'tab' + (curTab === name ? ' on' : '') + (name !== '全部' ? ' droppable' : '');
+    el.innerHTML = esc(name) + ' <span class="cnt">' + counts[name] + '</span>';
+    el.onclick = () => { curTab = name; shown = PAGE; render(); };
+    if (name !== '全部') {
+      el.ondragover = e => { if (dragRec) { e.preventDefault(); el.classList.add('over'); } };
+      el.ondragleave = () => el.classList.remove('over');
+      el.ondrop = e => {
+        e.preventDefault(); el.classList.remove('over');
+        const d = byRec[dragRec]; dragRec = null;
+        if (d && d.status !== name) setStatus(d, name);
+      };
+    }
+    $('tabs').appendChild(el);
+  });
+}
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target, pid = el.dataset.pid;
+      if (!el.querySelector('iframe')) {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.instagram.com/p/' + pid + '/embed/';
+        f.loading = 'lazy'; f.allow = 'autoplay; encrypted-media';
+        el.appendChild(f);
+      }
+      io.unobserve(el);
+    }
+  });
+}, { rootMargin: '400px' });
+
+async function setStatus(d, val) {
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?post_id=eq.' + encodeURIComponent(d.id), {
+      method: 'PATCH',
+      headers: { 'apikey': ANON, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: val })
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    d.status = val;
+    cacheStatus(d.id, val);
+    toast('✓ @' + d.competitor + ' 已移到「' + val + '」', true);
+  } catch (e) {
+    toast('更新失败: ' + e.message + (String(e.message).includes('401') || String(e.message).includes('403') ? ' — 密钥无效?' : ''), false);
+  }
+  render();
+}
+
+function card(d, idx) {
+  const el = document.createElement('div');
+  el.className = 'card' + ((d.x || 0) >= 2 ? ' outlier' : '');
+  el.style.animationDelay = Math.min(idx % PAGE, 14) * 30 + 'ms';
+  el.draggable = true;
+  el.ondragstart = e => {
+    dragRec = d.id;
+    e.dataTransfer.effectAllowed = 'move';
+    el.classList.add('lifting');
+    document.body.classList.add('dragging');
+  };
+  el.ondragend = () => {
+    el.classList.remove('lifting');
+    document.body.classList.remove('dragging');
+    dragRec = null;
+  };
+  const typeIcon = d.video ? 'video' : (d.type === 'Carousel' ? 'layers' : 'image');
+  const days = d.days, horse = d.horse;
+  const ago = days === null ? '' : (days === 0 ? '今天' : days + '天前');
+  const lines = (d.caption || '').split('\n').map(l => l.trim()).filter(Boolean);
+  const hook = lines[0] || '';
+  const tr = (d.transcript && d.transcript !== '(转录失败)' && d.transcript !== '(无口播内容)') ? d.transcript : '';
+  el.innerHTML = `
+    <div class="embed" data-pid="${d.id}"><div class="ph"><svg class="ic"><use href="#i-${typeIcon}"/></svg></div></div>
+    <div class="meta">
+      <div class="row1">
+        <span class="handle" title="拖到上方 tab 即可归类">${I('grip')}</span>
+        <a class="who" href="https://www.instagram.com/${d.competitor}/" target="_blank">@${d.competitor}</a>
+        <span class="badge">${d.type || '-'}</span>
+        ${days !== null && days <= 7 ? '<span class="badge bnew">' + I('star') + '新帖</span>' : ''}
+        ${horse ? '<span class="badge bhorse">' + I('zap') + '黑马</span>' : ''}
+        ${d.bait ? '<span class="badge bbait" title="「留言XX」引流打法 — 评论被引流放大,漏斗设计值得学">' + I('magnet') + '引流</span>' : ''}
+        <span class="date" title="${d.date || ''}">${ago}</span>
+      </div>
+      <div class="nums">
+        <span class="num hot" title="Viral Score">${I('flame')}<b>${d.score}</b></span>
+        ${(d.x || 0) >= 2 ? '<span class="num x" title="是自家平均热度的多少倍">' + I('trend') + '<b>×' + d.x + '</b></span>' : ''}
+        <span class="num er" title="Engagement Rate">${I('pct')}<b>${d.er}%</b></span>
+        <span class="num" title="Likes">${I('heart')}<b>${d.likes > 0 ? fmt(d.likes) : '隐藏'}</b></span>
+        <span class="num" title="Comments">${I('msg')}<b>${fmt(d.comments)}</b></span>
+        <span class="num" title="Followers">${I('users')}<b>${fmt(d.followers)}</b></span>
+      </div>
+      <div class="cap" onclick="this.classList.toggle('open')"></div>
+      ${d.brk ? '<div class="ai" onclick="this.classList.toggle(&quot;open&quot;)"></div>' : ''}
+      ${d.my ? '<div class="mine" onclick="this.classList.toggle(&quot;open&quot;)"></div>' : ''}
+      <div class="srow"><label>状态</label><select class="status btn s${d.status}"></select>
+        <button class="abtn copy" title="复制完整文案">${I('copy')}文案</button>
+        ${tr ? '<button class="abtn mic" title="复制视频口播逐字稿">' + I('mic') + '口播</button>' : ''}
+        ${d.my ? '<button class="abtn minec" title="复制我的改写口播稿(可直接拍)">' + I('mic') + '我的稿</button>' : ''}
+        <button class="abtn brief" title="复制拍摄 Brief(数据+Hook+AI拆解+我的稿+口播稿+文案)">${I('clip')}Brief</button>
+        <a class="abtn" href="${d.url}" target="_blank" title="打开 Instagram 原帖">${I('ext')}</a></div>
+    </div>`;
+  const capEl = el.querySelector('.cap');
+  const restTxt = lines.slice(1).join('\n');
+  capEl.innerHTML = hook ? '<b>' + esc(hook) + '</b>' + (restTxt ? '<br>' + esc(restTxt).replace(/\n/g, '<br>') : '') : '';
+  const aiEl = el.querySelector('.ai');
+  if (aiEl) aiEl.innerHTML = '<b>💡 AI 拆解</b><br>' + esc(d.brk).split(String.fromCharCode(10)).join('<br>');
+  const myEl = el.querySelector('.mine');
+  if (myEl) myEl.innerHTML = '<b>🎬 我的版本(可直接拍)</b><br>' + esc(d.my).split(String.fromCharCode(10)).join('<br>');
+  const sel = el.querySelector('.status');
+  STATUSES.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  sel.value = d.status;
+  sel.onchange = () => setStatus(d, sel.value);
+  el.querySelector('.copy').onclick = () =>
+    navigator.clipboard.writeText(d.caption || '').then(() => toast('✓ 文案已复制', true));
+  const micBtn = el.querySelector('.mic');
+  if (micBtn) micBtn.onclick = () =>
+    navigator.clipboard.writeText(tr).then(() => toast('✓ 口播稿已复制', true));
+  const mineBtn = el.querySelector('.minec');
+  if (mineBtn) mineBtn.onclick = () =>
+    navigator.clipboard.writeText(d.my).then(() => toast('✓ 我的改写稿已复制', true));
+  el.querySelector('.brief').onclick = () => {
+    const NL = String.fromCharCode(10);
+    const parts = ['🎬 爆款参考 @' + d.competitor + ((d.x || 0) >= 2 ? '(自家平均 ×' + d.x + ')' : ''),
+      '📊 🔥' + d.score + ' | ER ' + d.er + '% | ❤️ ' + (d.likes > 0 ? fmt(d.likes) : '隐藏') +
+      ' | 💬 ' + fmt(d.comments) + ' | 👥 ' + fmt(d.followers) + (ago ? ' | ' + ago : ''),
+      '🔗 ' + d.url, '✍️ Hook: ' + hook];
+    if (d.brk) parts.push('——— AI 拆解 ———', d.brk);
+    if (d.my) parts.push('——— 我的版本(可直接拍)———', d.my);
+    if (tr) parts.push('——— 竞对原口播稿 ———', tr);
+    parts.push('——— 完整文案 ———', d.caption || '');
+    navigator.clipboard.writeText(parts.join(NL)).then(() => toast('✓ Brief 已复制,可直接发给拍摄/剪辑', true));
+  };
+  io.observe(el.querySelector('.embed'));
+  return el;
+}
+
+function render() {
+  renderTabs();
+  const arr = filtered();
+  const grid = $('grid'); grid.innerHTML = '';
+  arr.slice(0, shown).forEach((d, i) => grid.appendChild(card(d, i)));
+  $('empty').style.display = arr.length ? 'none' : '';
+  $('moreWrap').style.display = arr.length > shown ? '' : 'none';
+}
+
+
+function applyStatusCache() {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    Object.keys(c).forEach(rid => { const d = byRec[rid]; if (d) d.status = c[rid]; });
+  } catch (e) {}
+}
+
+function cacheStatus(rid, val) {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    c[rid] = val; localStorage.setItem('st_cache', JSON.stringify(c));
+  } catch (e) {}
+}
+
+// live status refresh (so weekly-baked page shows current statuses)
+async function refreshStatuses() {
+  applyStatusCache(); render();  // last-known statuses first
+  if (Date.now() - (+localStorage.getItem('st_ts') || 0) < 600000) return;  // 10-min throttle
+  localStorage.setItem('st_ts', String(Date.now()));
+  const fresh = {};
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?select=post_id,status', { headers: { 'apikey': ANON } });
+    if (!r.ok) return;
+    (await r.json()).forEach(row => {
+      const d = byRec[row.post_id];
+      if (d) d.status = row.status || '未处理';
+      if (row.status && row.status !== '未处理') fresh[row.post_id] = row.status;
+    });
+    localStorage.setItem('st_cache', JSON.stringify(fresh));
+    render();
+  } catch (e) {}
+}
+
+['fTracker','fComp','fSort'].forEach(id => $(id).onchange = () => { shown = PAGE; render(); });
+$('fSearch').oninput = () => { shown = PAGE; render(); };
+$('fVideo').onclick = () => { videoOnly = !videoOnly; $('fVideo').classList.toggle('on', videoOnly); shown = PAGE; render(); };
+$('moreBtn').onclick = () => { shown += PAGE; render(); };
+
+// preset quick filters
+$('presets').innerHTML = '<span class="lbl">快筛</span>';
+PRESETS.forEach(p => {
+  const c = document.createElement('span'); c.className = 'chip2';
+  c.innerHTML = I(p.icon) + esc(p.label);
+  c.onclick = () => { presetOn[p.k] = !presetOn[p.k]; c.classList.toggle('on', presetOn[p.k]); shown = PAGE; render(); };
+  $('presets').appendChild(c);
+});
+
+// trending hashtags among outlier posts
+if (TRENDS.length) {
+  $('trends').innerHTML = '<span class="lbl">爆款热词</span>';
+  TRENDS.forEach(([tag, n]) => {
+    const c = document.createElement('span'); c.className = 'chip2';
+    c.textContent = '#' + tag + ' ' + n;
+    c.onclick = () => { $('fSearch').value = $('fSearch').value === tag ? '' : tag; shown = PAGE; render(); };
+    $('trends').appendChild(c);
+  });
+} else { $('trends').style.display = 'none'; }
+
+render();
+refreshStatuses();
+</script>
+</body>
+</html>
